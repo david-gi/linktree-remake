@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "circular-json": "^0.5.9",
-    "firebase": "^5.8.4",
+    "firebase": "^5.9.4",
     "vue": "^2.6.10",
     "vue-loader": "^14.2.4",
-    "vue-resource": "^1.3.1",
-    "vue-router": "^2.5.3",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^2.8.1",
     "vue-template-compiler": "^2.6.10",
-    "vuex": "^2.3.1"
+    "vuex": "^2.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -30,7 +30,7 @@
     "webpack": "2.1.0-beta.25",
     "webpack-dev-server": "2.1.0-beta.0"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/david-gi/linkkle.git"

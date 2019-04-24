@@ -2,35 +2,29 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
 
-import user from './modules/user'
-import places from './modules/places'
+import core from './modules/core'
 
 Vue.use(Vuex)
 
 //firebase init
 const db = firebase.initializeApp({
-	apiKey: "AIzaSyAzTjASmqR-IXxxJ31I7wpOHOVpcHyhkdk",
-	authDomain: "glutenous.firebaseapp.com",
-	databaseURL: "https://glutenous.firebaseio.com",
-	projectId: "glutenous",
-	storageBucket: "glutenous.appspot.com",
-	messagingSenderId: "670970270718"
+	apiKey: "AIzaSyAE1GxiOyfhik0o5Y6eNny0efrLiZbuguk",
+	authDomain: "linkkle.firebaseapp.com",
+	databaseURL: "https://linkkle.firebaseio.com",
+	projectId: "linkkle",
+	storageBucket: "linkkle.appspot.com",
+	messagingSenderId: "972094059119"
 }).firestore()
 
 var store = new Vuex.Store({
 	state: {
-		usersRef: db.collection("users"),
-		conditionsRef: db.collection("conditions"),
-		placesRef: db.collection("places"),
-		placeTypesRef: db.collection("place-types"),
-		sponsorsRef: db.collection("sponsors"),
-		reportsRef: db.collection("reports"),
+		accountsRef: db.collection("accounts"),
+		sectionsRef: db.collection("sections"),
 		bugsRef: db.collection("bugs"),
 		
 		auth: false,
 		msg: null,
 		error: null,
-		showProfile: false,
 		loading: false
 	},
 	mutations: {
@@ -52,9 +46,6 @@ var store = new Vuex.Store({
 		setLoading (state, x) {
 		  state.loading = x
 		},
-		toggleProfile (state) {
-		  state.showProfile = !state.showProfile
-		},
 	},
 	actions: {
 		setAuth ({commit}, x){
@@ -72,21 +63,11 @@ var store = new Vuex.Store({
 		loading0 ({commit}){
 			commit("setLoading", false)
 		},
-		toggleProfile ({commit}){
-			commit("toggleProfile")
-		},
 	},
 	getters:{
-		showProfile: state => {
-			return state.showProfile
-		},
-		error: state => {
-			return state.error
-		},
 	},
 	modules: {
-		user,
-		places,
+		core
 	},
 })
 export default store
