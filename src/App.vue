@@ -8,18 +8,25 @@
         <br>
     	<div class="row clearfix">
     	</div>
-        <div class="row no-gutters">
-            <div v-show="msg" class="w-25 rounded-top text-center p-2 pt-4 pb-4 text-white fixed-bottom msg bg-primary">{{msg}}</div>
+
+        <div v-show="msg" class="row no-gutters">
+            <div class="w-25 rounded-top text-center p-2 pt-4 pb-4 text-white fixed-bottom msg bg-primary">{{msg}}</div>
         </div>
-        <div class="row no-gutters">
-            <div v-show="error" class="col-12x text-center text-white fixed-bottom error bg-danger">{{error}}</div>
+
+        <div v-show="error" class="row no-gutters">
+            <div class="col-12x text-center text-white fixed-bottom error bg-danger">{{error}}</div>
+        </div>
+
+		<div id="Footer" class="text-center"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/></div>
+    
+        <div v-show="loading" class="loading">
+            <div class="waiting-dots"></div>  
         </div>
     </div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import H from './utils/helpers';
 export default {
     data() {
         return {
@@ -56,7 +63,8 @@ export default {
 <style>
 	body {
 		padding: 0;
-	    font-family: Verdana, Geneva, Tahoma, sans-serif;
+	    font-family: 16px/1.8 'Open Sans', Helvetica, Arial, sans-serif;
+        color: #222;
 	}
 
     .error, .msg{
@@ -111,5 +119,76 @@ export default {
 	}
 	.inputLine::placeholder {
 		opacity: 1;
-	}
+    }
+    
+    .loading{
+        top:0;
+        padding-top:10%;
+        background-color: rgba(255, 255, 255, 0.3);
+        width: 100%;
+        height: 100%;
+        margin-left:-30px;
+        position: fixed;
+    }
+    /*Typing Loader*/
+    .waiting-dots{
+        margin:0 auto;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        -webkit-animation: typing 1s linear infinite alternate;
+        -moz-animation: Typing 1s linear infinite alternate;
+        animation: typing 1s linear infinite alternate;
+        position: relative;
+    }
+    @-webkit-keyframes typing{
+        0%{
+            background-color: rgb(81, 157, 232, 1);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,0.2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,0.2);
+        }
+        25%{ 
+            background-color: rgba(81, 157, 232, 0.4);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,0.2);
+        }
+        75%{ background-color: rgba(81, 157, 232, 0.4);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,0.2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,1);
+        }
+    }
+
+    @-moz-keyframes typing{
+        0%{
+            background-color: rgba(81, 157, 232, 1);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,0.2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,0.2);
+        }
+        25%{ 
+            background-color: rgba(81, 157, 232, 0.4);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,0.2);
+        }
+        75%{ background-color: rgba(81, 157, 232, 0.4);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,0.2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,1);
+        }
+    }
+
+    @keyframes typing{
+        0%{
+            background-color: rgba(81, 157, 232, 1);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,0.2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,0.2);
+        }
+        25%{ 
+            background-color: rgba(81, 157, 232, 0.4);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,0.2);
+        }
+        75%{ background-color: rgba(81, 157, 232, 0.4);
+            box-shadow: 18px 0px 0px 0px rgba(81, 157, 232,0.2), 
+                        36px 0px 0px 0px rgba(81, 157, 232,1);
+        }
+    }
 </style>

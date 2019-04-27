@@ -5,7 +5,7 @@ import W404 from './components/404.vue'
 
 export const routes = [
 	{ path: '/login', component: Auth },
-	{ path: '/edit/:id', component: Profile },
+	{ path: '/edit', component: Profile },
 	{ path: '/:id', component: Public },
 	{ path: '*', component: W404 },
 ]
