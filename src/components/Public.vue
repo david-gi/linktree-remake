@@ -131,6 +131,7 @@ export default {
 	text-align: center;
 	padding: 6px;
 	padding-top: 90px;
+		border: 4px #fff solid;
 }
 	#Banner h1{
 		font-size: 1.2em;
@@ -142,10 +143,11 @@ export default {
 #Sections {
 }
 	#Sections .section{
-		padding-top: 9px;
 		text-align: center;
 		vertical-align: middle;
-		border: 1px #fff solid;
+		border: 4px #fff solid;
+		float: left;
+		clear:none;
 	}
 	#Sections .section:hover{
 		opacity: .9;

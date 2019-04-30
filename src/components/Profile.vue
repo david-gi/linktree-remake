@@ -7,6 +7,7 @@
 				</div>
 			</div>
 			<div id="Banner" :style="bannerStyle" class="">
+				<img @click="openAccountEdit()" class="icon float-right ml-n5" height="26" width="38" src="src/assets/mod.svg" />
 				<h1>{{account.Title}}</h1>
 				<h2>
 					@{{account.Username}}
@@ -16,38 +17,50 @@
 		</div>
 
 		<div id="Sections" v-sortable="{ onUpdate: onSort }" class="row no-gutters justify-content-between">
-			<div v-for="sect in localSections" :key="sect.Order"
+			<div v-for="(sect, index) in sections" :key="sect.Order"
 				class="section col-12 " :class="{
 					'h-1': (sect.Height == 1), 'h-2': (sect.Height == 2), 'h-3': (sect.Height == 3),
-					'col-sm-12': (sect.Width == 1), 'col-sm-12': (sect.Width == 2), 'col-sm-12': (sect.Width == 3)
+					'col-sm-4': (sect.Width == 1), 'col-sm-6': (sect.Width == 2), 'col-sm-12': (sect.Width == 3)
 					}">
-				<div :style="sectionStyle(sect)">
+				<div v-show="!sect.edit" :style="sectionStyle(sect)">
+					<img @click="openEdit(index)" class="icon float-right" height="26" width="38" src="src/assets/mod.svg" />
+					
 					{{sect.Title}}
 				</div>
 			</div>
 		</div>
+		<div class="">
+			<div class="addBtn text-center p-0 pb-1" @click="newSection()">+</div>
+		</div>
 
+		<accountModal ref="accountModal"></accountModal>
+		<editModal ref="editModal"></editModal>
 	</div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import AccountModal from './widgets/AccountModal.vue'
+import EditModal from './widgets/EditModal.vue'
 export default {
 		data() {
 			return {
 				id: this.$route.params.id,
-				localSections: [],
 				dataLoaded: false,
 				c1: "#354378",
 				c2: "#519DE8",
 			}
 		},
+		components: {
+			accountModal: AccountModal,
+			editModal: EditModal
+		},
 		created(){
 			var tthis = this
+			this.loading1()
 			this.autoLogin().then(()=>{
-				this.getSections().then(res=>{
-					var _x = tthis.sections
-					this.localSections = res
+				this.getSections().then(()=>{
+					this.loading0()
 					tthis.dataLoaded = true
 				})
 			})
@@ -87,21 +100,53 @@ export default {
 				'loading0'
 
 			]),
+			refreshSections: function (){
+				var tthis = this
+				this.getSections().then(()=>{
+					tthis.loading0()
+				})
+			},
+			newSection: function (event) {
+				this.loading1()
+				var tthis = this
+				this.addSection({})
+					.then(newId => { 
+						this.getSections().then(()=>{
+							tthis.loading0()
+							tthis.openEdit(tthis.sections.length - 1)
+						})
+					})
+					.catch(e => tthis.loading0())
+			},
+			openAccountEdit(){
+				var tthis = this
+				setTimeout(function(){
+						tthis.$refs.accountModal.open()
+					}, 500)
+			},
+			openEdit(index){
+				var tthis = this
+				this.$refs.editModal.section = this.sections[index]
+				setTimeout(function(){
+						tthis.$refs.editModal.open()
+					}, 500)
+			},
 			onSort: function (event) {
 				this.loading1()
 				var tthis = this
-				this.localSections.splice(event.newIndex, 0, this.localSections.splice(event.oldIndex, 1)[0])
-				this.updateSectionOrders(this.localSections)
-					.then(() => {
-						tthis.getSections().then(res=>{
-							tthis.localSections = res
+				var modSects = this.sections
+				modSects.splice(event.newIndex, 0, modSects.splice(event.oldIndex, 1)[0])
+				this.updateSectionOrders(modSects)
+					.then(()=>{
+						this.getSections().then(()=>{
 							tthis.loading0()
 						})
-					}).catch(e => tthis.loading0())
+					})
+					.catch(e => tthis.loading0())
 			},
 			sectionStyle(sect) {
 				var style = { } 
-				style["background-color"] = this.account.Link && this.account.Link.length > 6 
+				style["background-color"] = this.account.Link && this.account.Link.length > 5 
 						? this.account.Link :  this.c2
 				style["color"] = this.account && this.account.LinkText.length > 6 
 						? this.account.LinkText : "#ffffff"
@@ -113,7 +158,6 @@ export default {
 					style["background-image"] = "url('"+ sect.Value +"')"
 					style["color"] = 'transparent'
 					style["text-align"] = 'right'
-					style["cursor"] = 'auto !important'
 				}
 
 				return style
@@ -144,6 +188,7 @@ export default {
 #Banner{
 	text-align: center;
 	padding: 6px;
+	border: 4px #fff solid;
 	padding-top: 90px;
 }
 	#Banner h1{
@@ -154,13 +199,12 @@ export default {
 		font-size: 1.1em;
 	}
 #Sections {
-
+	outline: 0;
 }
 	#Sections .section{
-		padding-top: 9px;
 		text-align: center;
 		vertical-align: middle;
-		border: 1px #fff solid;
+		border: 4px #fff solid;
 		float: left;
 		clear:none;
 	}
@@ -169,9 +213,15 @@ export default {
 	}
 	#Sections .section div {
 		padding: 6px;
-		cursor: pointer;
+		cursor: move;
 		height: 100%;
 	}
+		.icon {
+			cursor: pointer;
+			border: transparent 4px solid;
+			border-left-width: 6px;
+			border-right-width: 6px;
+		}
 		#Sections .h-1 div {
 			height: 36px;
 		}
@@ -183,4 +233,30 @@ export default {
 			padding-top: 57px;
 			height: 144px;
 		}
+	#Sections input {
+		padding: 0 6px;
+		margin:0;
+		outline: 0;
+		border: 1px rgba(1, 1, 1, 0.3) solid;
+		border-radius: 2px;
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+	.addBtn{
+		cursor: pointer;
+		font-size: 1.6em;
+		font-weight: bold;
+		color: #555;
+		border: 1px #bbb solid;
+		margin:3px;
+	}
+	.addBtn:hover {
+		border: 1px #519DE8 solid;
+		color: #519DE8;
+	}
+	.addBtn:active {
+		opacity: 1;
+		color: #fff;
+		background-color: #519DE8;
+		border: 1px #519DE8 solid;
+	}
 </style>

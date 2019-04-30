@@ -10,7 +10,9 @@
     	</div>
 
         <div v-show="msg" class="row no-gutters">
-            <div class="w-25 rounded-top text-center p-2 pt-4 pb-4 text-white fixed-bottom msg bg-primary">{{msg}}</div>
+            <div class="fixed-bottom msg">
+                <small>{{msg}}...</small>
+            </div>
         </div>
 
         <div v-show="error" class="row no-gutters">
@@ -67,10 +69,14 @@ export default {
         color: #222;
 	}
 
-    .error, .msg{
+    .error{
         padding:9px;
     }
-
+    .msg{
+        color: #333;
+        text-shadow: #fff 0 0 5px;
+        padding:0px 0px 4px 9px;
+    }
     .slide-enter-active{
         animation: slide-in 200ms ease-out forwards;
     }
@@ -111,7 +117,7 @@ export default {
 		color:#555;
 		opacity: 1;
 		border: 0;
-		border-bottom: 2px solid #28A744;
+		border-bottom: 2px solid #666;
 		margin-bottom: 6px;
 		height: 50px;
 		resize: none;

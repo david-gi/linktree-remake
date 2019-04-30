@@ -73,25 +73,25 @@ const actions = {
 							context.commit('setAuth', true)
 							resolve(null)
 						} else{
-							var newAccount = {
-								Avatar: "",
-								Bio: "",
-								Email: acc.data().Email,
-								Location: "",
-								Plan: 1,
-								Title: ""
-							}
-							docRef.set(newAccount).then(res => {
-								newAccount["id"] = acc.uid
-								context.commit('setAccount', newAccount)
-								context.commit('setAuth', true)
-								resolve(null)
-							})
+							// var newAccount = {
+							// 	Avatar: "",
+							// 	Bio: "",
+							// 	Email: acc.data().Email,
+							// 	Location: "",
+							// 	Plan: 1,
+							// 	Title: ""
+							// }
+							// docRef.set(newAccount).then(res => {
+							// 	newAccount["id"] = acc.uid
+							// 	context.commit('setAccount', newAccount)
+							// 	context.commit('setAuth', true)
+							// 	resolve(null)
+							// })
 						}
 					})
 			//}
 		//})
-		//.catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
+		.catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
 	})
 	},
 	logout: (context) => {
@@ -103,12 +103,23 @@ const actions = {
 		})
 		.catch(e => { console.log(e) })
 	},
-	updateAccountField: (context, field, val) => {
-		this.updateFields(context, "accounts", firebase.auth().currentUser.uid, [[field, val]])
+	updateAccount: (context, fieldSets) => {
+		context.dispatch("updateFields", 
+		//TEST REMOVE//
+		{ 'col': "accounts", "doc": "x12rCHG2akWAUqzAdXhF22eyNpf2", "fieldSets": fieldSets })
 			.then(res => {
 				context.commit("setAccount", res)
 				context.commit('setMsg', 'Saved')
-			})
+			}).catch(e => context.commit('setError', e+""))
+	},
+	usernameCheck: (context, x) => {
+		return new Promise((resolve, reject) => {
+			context.rootState.sectionsRef.where("Username", "==", x.toLowerCase()).get()
+				.then(function(snap) {
+					resolve(false)
+					//resolve(snap.size > 0 ? false : true)
+				})
+		})
 	},
 
 	updateFields: (context, { col, doc, fieldSets }) => {
@@ -120,9 +131,11 @@ const actions = {
 				case "accounts":
 					docRef = context.rootState.accountsRef.doc(doc)
 					obj = context.state.account
+					break
 				case "sections":
 					docRef = context.rootState.sectionsRef.doc(doc)
 					obj = context.state.sections.find(function(x, i){ objIndex = i; return x.id == doc; })
+					break
 				default:
 					if(docRef == null){
 					console.log(col + " invalid")
@@ -130,7 +143,8 @@ const actions = {
 				}
 			}
 			docRef.get()
-				.then(res => {				
+				.then(res => {	
+					console.log(JSON.stringify(fieldSets))			
 					if(res.exists){
 						var updated = {}
 						fieldSets.forEach(set => {
@@ -154,10 +168,10 @@ const actions = {
 						}
 						resolve(obj);
 					} else {
-						throw col.substring(0, col.length - 2) + " does not exist!"
+						throw col.substring(0, col.length - 1) + " does not exist!"
 					}
 				})
-				.catch(e => {console.log(e); reject(null);})
+				.catch(e => {console.log(e); reject(e);})
 			})
 	},
 	
@@ -174,7 +188,7 @@ const actions = {
 					})
 					
 					context.commit("setSections", sections)
-					resolve(sections)
+					resolve(null)
 				})
 		})
 	},
@@ -182,29 +196,38 @@ const actions = {
 		context.commit("sortSections")
 	},
 	addSection: (context, newSect) => {
-		context.dispatch('sortSections')
-			.then(() =>{
-				var sLength = context.state.sections.length
-				var end = context.state.sections.length < 1 
-							? 1 : context.state.sections[sLength - 1].Order + 1
+		return new Promise((resolve, reject) => {
+			var sLength = context.state.sections.length
+			var end = context.state.sections.length < 1 
+						? 1 : context.state.sections[sLength - 1].Order + 1
 
-				newSect['Account'] = context.state.account.id
-				newSect['Order'] = end
-				newSect['Height'] = 1
-				newSect['Clicks'] = 0
+			newSect['Account'] = context.state.account.id
+			newSect['Order'] = end
+			newSect['Type'] = 0
+			newSect['Width'] = 3
+			newSect['Height'] = 1
+			newSect['Clicks'] = 0
 
-				context.rootState.sectionsRef.add(newSect).then(res =>{
-					newSect["id"] = res.id
-					context.commit("setSection", sLength,  newSect)
-				})
+			context.rootState.sectionsRef.add(newSect).then(res =>{
+				newSect["id"] = res.id
+				context.commit('setMsg', 'Added')
+				context.commit("setSection", sLength,  newSect)
+				resolve(res.id)
 			})
+		})
 	},
-	updateSection: (context, doc, fieldSets) => {
-		this.updateFields(context, "sections", doc, fieldSets)
-			.then(res => {
-				context.commit('setMsg', 'Updated')
-				context.commit("sortSections")
-			})
+	updateSection: (context, {doc, fieldSets}) => {
+		return new Promise((resolve, reject) => {
+			var filterIndex = fieldSets.findIndex(x => { x[0].toLowerCase() == "clicks"} )
+			if(filterIndex > -1) fieldSets.splice(filterIndex, 1)
+
+			context.dispatch("updateFields", { 'col': "sections", "doc": doc, "fieldSets": fieldSets })
+				.then(res => {
+					context.commit('setMsg', 'Saved')
+					context.commit("sortSections")
+					resolve(null)
+				}).catch(e=>reject(null))
+		})
 	},
 	updateSectionOrders: (context, sections) => {
 		return new Promise((resolve, reject) => {
@@ -212,16 +235,14 @@ const actions = {
 				//update db
 				context.dispatch("updateFields", { 'col': "sections", "doc": sect.id, "fieldSets": [['Order', i]] })
 					.then(()=>{
-						context.dispatch("sortSections").then(()=>{
-							resolve(null)
-						})
-					})
+						context.commit('setMsg', 'Order changed')
+						resolve(null)
+					}).catch(e=>reject(null))
 			})
 		})
 	},
-	deleteSection: (context, index, doc) => {
-		context.rootState.sectionsRef.delete(doc).then(() =>{
-			context.commit("removeSection", index)
+	deleteSection: (context, doc) => {
+		context.rootState.sectionsRef.doc(doc).delete().then(() =>{
 			context.commit('setMsg', 'Deleted')
 		})
 	},

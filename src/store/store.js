@@ -56,6 +56,7 @@ var store = new Vuex.Store({
 		},
 		errorMsg ({commit}, x){
 			commit("setError", x)
+			commit("setLoading", false)
 		},
 		loading1 ({commit}){
 			commit("setLoading", true)
