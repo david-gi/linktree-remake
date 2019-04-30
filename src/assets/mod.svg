@@ -5,7 +5,7 @@
 	width="896.025px" height="896.025px" viewBox="0 0 896.025 896.025" style="enable-background:new 0 0 896.025 896.025;" xml:space="preserve">
 <defs>
 	<filter id="f1" x="0" y="0">
-		<feGaussianBlur in="SourceGraphic" stdDeviation="35" />
+		<feGaussianBlur in="SourceGraphic" stdDeviation="25" />
 	</filter>
 </defs>
 <g>

@@ -66,6 +66,9 @@ var store = new Vuex.Store({
 		},
 	},
 	getters:{
+		auth: state => {
+			return state.auth
+		},
 	},
 	modules: {
 		core

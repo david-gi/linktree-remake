@@ -58,11 +58,10 @@ const actions = {
 
 	autoLogin: (context, uid) => {
 	return new Promise((resolve, reject) => {
-		//firebase.auth().onAuthStateChanged(function(acc) {
-		//	if (acc) {
-	//TEST REMOVE//
-		var acc = {uid: 'x12rCHG2akWAUqzAdXhF22eyNpf2', data: function(){ return {Email: "Linkkle@gmx.com"} }}
-                console.log('autologin...')
+		//firebase.auth().getRedirectResult()
+		firebase.auth().onAuthStateChanged(function(acc) {
+			if (acc) {
+				console.log('logging in...')
 				var docRef = context.rootState.accountsRef.doc(acc.uid)
 				docRef.get()
 					.then(p => {
@@ -71,32 +70,34 @@ const actions = {
 							accData["id"] = acc.uid
 							context.commit('setAccount', accData)
 							context.commit('setAuth', true)
-							resolve(null)
+							resolve(true)
 						} else{
-							// var newAccount = {
-							// 	Avatar: "",
-							// 	Bio: "",
-							// 	Email: acc.data().Email,
-							// 	Location: "",
-							// 	Plan: 1,
-							// 	Title: ""
-							// }
-							// docRef.set(newAccount).then(res => {
-							// 	newAccount["id"] = acc.uid
-							// 	context.commit('setAccount', newAccount)
-							// 	context.commit('setAuth', true)
-							// 	resolve(null)
-							// })
+							var newAccount = {
+								Avatar: "",
+								Bio: "",
+								Email: acc.data().Email,
+								Location: "",
+								Plan: 1,
+								Title: ""
+							}
+							docRef.set(newAccount).then(res => {
+								newAccount["id"] = acc.uid
+								context.commit('setAccount', newAccount)
+								context.commit('setAuth', true)
+								resolve(true)
+							})
 						}
-					})
-			//}
-		//})
-		.catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
+					}).catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
+			} else {
+				resolve(false)
+			}
+		})
+		
 	})
 	},
 	logout: (context) => {
 		firebase.auth().signOut().then(() => {
-			console.log("logged out")
+			console.log("Signed out...")
 			context.commit('setAuth', false)
 			context.commit("setAccount", null)
 			context.commit('setMsg', 'Signed out')
@@ -116,8 +117,7 @@ const actions = {
 		return new Promise((resolve, reject) => {
 			context.rootState.sectionsRef.where("Username", "==", x.toLowerCase()).get()
 				.then(function(snap) {
-					resolve(false)
-					//resolve(snap.size > 0 ? false : true)
+					resolve(snap.size > 0 ? false : true)
 				})
 		})
 	},

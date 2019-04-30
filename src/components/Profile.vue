@@ -1,8 +1,8 @@
 <template>
 	<div id="Container" class="col-12" v-if="dataLoaded">
-
 		<div id="Header" class="">
 			<div id="Avatar" class="col-12">
+				<button class="btn btn-sm btn-outline-secondary float-right" @click="logOff()">Sign out</button>
 				<div class="rounded-circle" :style="avatarStyle">
 				</div>
 			</div>
@@ -12,7 +12,7 @@
 				<h2>
 					@{{account.Username}}
 					</h2>
-				<p>{{account.Bio}}</p>
+				<p class="">{{account.Bio}}</p>
 			</div>
 		</div>
 
@@ -23,16 +23,19 @@
 					'col-sm-4': (sect.Width == 1), 'col-sm-6': (sect.Width == 2), 'col-sm-12': (sect.Width == 3)
 					}">
 				<div v-show="!sect.edit" :style="sectionStyle(sect)">
+					<img class="icon move float-left" height="26" width="38" src="src/assets/move.svg" />
 					<img @click="openEdit(index)" class="icon float-right" height="26" width="38" src="src/assets/mod.svg" />
 					
 					{{sect.Title}}
 				</div>
 			</div>
 		</div>
+
 		<div class="">
 			<div class="addBtn text-center p-0 pb-1" @click="newSection()">+</div>
 		</div>
 
+	
 		<accountModal ref="accountModal"></accountModal>
 		<editModal ref="editModal"></editModal>
 	</div>
@@ -58,18 +61,24 @@ export default {
 		created(){
 			var tthis = this
 			this.loading1()
-			this.autoLogin().then(()=>{
-				this.getSections().then(()=>{
-					this.loading0()
-					tthis.dataLoaded = true
+				this.autoLogin().then(res =>{
+					if(!res){
+						this.loading0()
+						window.location.replace('#/login')
+					} else {
+						tthis.getSections().then(()=>{
+							this.loading0()
+							tthis.dataLoaded = true
+						})
+					}
 				})
-			})
 		},
 		mounted(){
 		},
 		computed: {
 			...mapGetters([
 				'account',
+				'auth',
 				'sections'
 			]),
 			avatarStyle(){
@@ -90,6 +99,7 @@ export default {
 		methods: {
 			...mapActions([
 				'autoLogin',
+				'logout',
 				'getSections',
 				'addSection',
 				'updateSection',
@@ -100,6 +110,11 @@ export default {
 				'loading0'
 
 			]),
+			logOff(){
+				this.logout().then(()=>{
+					window.location.replace('#/login')
+				})
+			},
 			refreshSections: function (){
 				var tthis = this
 				this.getSections().then(()=>{
@@ -221,6 +236,9 @@ export default {
 			border: transparent 4px solid;
 			border-left-width: 6px;
 			border-right-width: 6px;
+		}
+		.icon.move{
+			cursor: move;
 		}
 		#Sections .h-1 div {
 			height: 36px;
