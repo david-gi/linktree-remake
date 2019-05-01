@@ -66,19 +66,26 @@ const actions = {
 				docRef.get()
 					.then(p => {
 						if(p.exists){
+							console.log('existing...')
 							var accData = p.data()
 							accData["id"] = acc.uid
 							context.commit('setAccount', accData)
 							context.commit('setAuth', true)
 							resolve(true)
 						} else{
+							console.log('new...')
 							var newAccount = {
 								Avatar: "",
-								Bio: "",
-								Email: acc.data().Email,
+								Bio: "All in one place...",
+								Email: acc.email,
 								Location: "",
 								Plan: 1,
-								Title: ""
+								Title: "My Links",
+								Username: acc.uid,
+								Banner:"#354378",
+								BannerText: "#519DE8",
+								Link: "#354378",
+								LinkText: "#519DE8",
 							}
 							docRef.set(newAccount).then(res => {
 								newAccount["id"] = acc.uid

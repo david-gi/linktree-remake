@@ -1,3 +1,2 @@
--create account
--upgrade
--login
+-upgrade (payment)
+-login (facebook, twitter, linkedin)
