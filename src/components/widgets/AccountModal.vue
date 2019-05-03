@@ -106,7 +106,6 @@
 		created(){
 			var tthis = this
 			setTimeout(() => {
-				for (var i in tthis.account) { tthis.oAccount[i] = tthis.account[i] } 
 				tthis.oUsername = this.account.Username 
 				tthis.linkColor = {hex: this.account.Link}
 				tthis.linkTextColor = {hex: this.account.LinkText}
@@ -144,11 +143,15 @@
 
 			]),
 			open(){
+				for (var i in this.account) { this.oAccount[i] = this.account[i] } 
 				$("#modalAccountWindow").modal({backdrop:false, show: true})
 			},
 			close(){
-				this.commitAccount(this.oAccount)
-				this.oAccount = {}
+				var tthis = this
+				this.commitAccount(this.oAccount).then(()=>{
+					tthis.oAccount = {}
+					tthis.$$forceUpdate()
+				})
 				$("#modalAccountWindow").modal("hide")
 			},
 			save(){
