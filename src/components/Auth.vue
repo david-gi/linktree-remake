@@ -14,7 +14,7 @@
 							<div id="gBtn" class="rounded border border-white" @click="doLogin(1)"></div>	
 						</div>	
 						<div class="float-left col-1 ml-2 mr-2">
-							<div disabled id="fbBtn" class="rounded border border-white" @click="doLogin(2)"></div>	
+							<div id="fbBtn" class="rounded border border-white" @click="doLogin(2)"></div>	
 						</div>	
 						<div class="float-left col-1 ml-2 mr-2">
 							<div disabled id="twBtn" class="rounded border border-white" @click="doLogin(3)"></div>	
@@ -36,7 +36,7 @@
 						</button>	
 					</div>	
 					<div class="col-12 mb-3">
-						<button disabled class="btn btn-outline-light w-100" @click="doLogin(2)">
+						<button class="btn btn-outline-light w-100" @click="doLogin(2)">
 							Sign Up with your <strong class="d-inline-block">Facebook account</strong>
 						</button>	
 					</div>	
