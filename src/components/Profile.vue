@@ -2,6 +2,7 @@
 	<div id="Container" class="col-12" v-if="dataLoaded">
 		<div id="Header" class="">
 			<div id="Avatar" class="col-12">
+				<button class="btn btn-sm btn-outline-primary float-left" @click="preview()">View Live</button>
 				<button class="btn btn-sm btn-outline-secondary float-right" @click="logOff()">Sign out</button>
 				<div class="rounded-circle" :style="avatarStyle">
 				</div>
@@ -110,6 +111,9 @@ export default {
 				'loading0'
 
 			]),
+			preview(){
+				window.open('#/'+this.account.Username, '_blank')
+			},
 			logOff(){
 				this.logout().then(()=>{
 					window.location.replace('#/login')
