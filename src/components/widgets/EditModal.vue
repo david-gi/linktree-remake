@@ -13,7 +13,7 @@
 				</div>
 				<form class="modal-body">
 					<div class="bg-white text-dark clearfix">
-						<div class="form-group col-6 col-md-4 float-left">
+						<div class="form-group col-12 col-sm-6  col-md-4 float-left">
 							<label>Type</label>
 							<select v-model="section.Type" class="form-control">
 								<option value="0">Link</option>
@@ -22,11 +22,11 @@
 								<option value="3">Image</option>
 							</select>	
 						</div>	
-						<div v-show="section.Type != 3" class="form-group col-6 col-md-4 float-left">
+						<div v-show="section.Type != 3" class="form-group col-12  col-sm-6 col-md-4 float-left">
 							<label>Title</label>
 							<input v-model="section.Title" type="text" class="form-control"  placeholder="Enter a title..."/>
 						</div>
-						<div class="form-group col-6 col-md-4 float-left">
+						<div class="form-group col-12  col-sm-6 col-md-4 float-left">
 							<label>{{valueLabel ? valueLabel : "Link"}}</label>
 							<input v-model="section.Value" type="text" class="form-control" :placeholder="valuePlaceholder" />
 						</div>	
@@ -34,7 +34,7 @@
 						<div v-show="!advSettings" class="form-group col-12 float-left p-0 m-0 ml-1">
 							<button type="button" class="form-control btn btn-sm text-left text-primary" @click="advOpen">Advanced settings</button>
 						</div>
-						<div v-show="advSettings" class="form-group float-left col-6 col-md-4 ">
+						<div v-show="advSettings" class="form-group float-left col-12  col-sm-6 col-md-4 ">
 							<label>Width</label>
 							<select v-model="section.Width" class="form-control">
 								<option value="3">Full</option>
@@ -42,7 +42,7 @@
 								<option value="1">Third</option>
 							</select>	
 						</div>	
-						<div v-show="advSettings" class="form-group float-left col-6 col-md-4 ">
+						<div v-show="advSettings" class="form-group float-left col-12 col-sm-6 col-md-4 ">
 							<label>Height</label>
 							<select v-model="section.Height" class="form-control">
 								<option value="1">Short</option>
@@ -51,10 +51,10 @@
 							</select>	
 						</div>	
 					</div>
-					<div class="text-right row mt-3 ml-3 mr-3 justify-content-between">
-						<button type="button" class="btn btn-outline-danger d-absolute col-3 mr-3" @click="remove()">Delete</button>
-						<button type="button" class="btn btn-outline-secondary offset-2 col-3" @click="close()">Cancel</button>
-						<button type="submit" class="btn btn-primary col-3" @click="save()">Save</button>
+					<div class="text-right row ml-3 mr-3 justify-content-between">
+						<button type="button" class="btn btn-outline-danger d-absolute col-12 col-sm-3 mr-3 mt-3" @click="remove()">Delete</button>
+						<button type="button" class="btn btn-outline-secondary offset-sm-2 col-12 col-sm-3 mt-3" @click="close()">Cancel</button>
+						<button type="submit" class="btn btn-primary col-12 col-sm-3 mt-3" @click="save()">Save</button>
 					</div>
 				</form>
 			</div>

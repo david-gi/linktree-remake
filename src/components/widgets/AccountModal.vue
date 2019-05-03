@@ -14,7 +14,7 @@
 				<form class="modal-body">
 					<div class="bg-white text-dark clearfix">
 
-						<div class="form-group col-6 float-left">
+						<div class="form-group col-12 col-sm-6 float-left">
 							<label>Avatar URL</label>
 							<div class="btn btn-small btn-primary float-right p-0 pl-2 pr-2" @click="setGravitar">
 								<small>Use Gravitar</small>
@@ -22,12 +22,12 @@
 							<input id="avatarInp" v-model="account.Avatar" type="text" class="form-control"  placeholder="http://www.example.com/image.jpg..."/>
 						</div>
 
-						<div class="form-group col-6 float-left">
+						<div class="form-group col-12 col-sm-6 float-left">
 							<label>Name</label>
 							<input v-model="account.Title" type="text" class="form-control" />
 						</div>
 
-						<div class="form-group col-6 float-left">
+						<div class="form-group col-12 col-sm-6 float-left">
 							<label>Username</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
@@ -40,7 +40,7 @@
 								<div v-show="!usernameValid && !checkingUsername" class="text-danger mb-n5 float-right"><small>Already used!</small></div>
 						</div>
 						 
-						<div class="form-group col-6 float-left">
+						<div class="form-group col-12 col-sm-6 float-left">
 							<label>Plan</label>
 							<div class="text-muted pt-1">{{ planName }} account</div>
 						</div>
@@ -75,10 +75,10 @@
 						</div>
 							
 					</div>
-					<div class="text-right row mt-3 ml-3 mr-3 justify-content-between">
-						<button type="button" class="btn btn-outline-danger d-absolute col-3 mr-3" @click="remove()">Delete</button>
-						<button type="button" class="btn btn-outline-secondary offset-2 col-3" @click="close()">Cancel</button>
-						<button type="button" v-bind:disabled="!usernameValid || checkingUsername" class="btn btn-primary col-3" @click="save()">Save</button>
+					<div class="text-right row ml-3 mr-3 justify-content-between">
+						<button type="button" class="btn btn-outline-danger d-absolute col-12 col-sm-3 mt-3 mr-3" @click="remove()">Delete</button>
+						<button type="button" class="btn btn-outline-secondary offset-sm-2 col-12 col-sm-3 mt-3" @click="close()">Cancel</button>
+						<button type="button" v-bind:disabled="!usernameValid || checkingUsername" class="btn btn-primary col-12 col-sm-3 mt-3" @click="save()">Save</button>
 					</div>
 				</form>
 			</div>
@@ -150,7 +150,7 @@
 				var tthis = this
 				this.commitAccount(this.oAccount).then(()=>{
 					tthis.oAccount = {}
-					tthis.$$forceUpdate()
+					tthis.$forceUpdate()
 				})
 				$("#modalAccountWindow").modal("hide")
 			},
