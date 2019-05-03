@@ -15,14 +15,6 @@ export default {
 		},
 		mounted(){
 		},
-		computed: {
-			...mapGetters([
-			]),
-		},
-		methods: {
-			...mapActions([
-			]),
-		}
 	}
 </script>
 

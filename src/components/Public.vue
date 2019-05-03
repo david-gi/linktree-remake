@@ -124,6 +124,7 @@ export default {
 		background-position: center center;
 		background-repeat: no-repeat;
 		background-size: cover;
+		background-color: #fff;
 		border: 6px #fff solid;
 		margin: 0 auto;
 	}
@@ -140,8 +141,6 @@ export default {
 	#Banner h2{
 		font-size: 1.1em;
 	}
-#Sections {
-}
 	#Sections .section{
 		text-align: center;
 		vertical-align: middle;

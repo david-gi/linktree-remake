@@ -197,6 +197,7 @@ export default {
 		background-position: center center;
 		background-repeat: no-repeat;
 		background-size: cover;
+		background-color: #fff;
 		border: 6px #fff solid;
 		margin: 0 auto;
 	}

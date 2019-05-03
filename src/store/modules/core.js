@@ -114,7 +114,7 @@ const actions = {
 	updateAccount: (context, fieldSets) => {
 		context.dispatch("updateFields", 
 		//TEST REMOVE//
-		{ 'col': "accounts", "doc": "x12rCHG2akWAUqzAdXhF22eyNpf2", "fieldSets": fieldSets })
+		{ 'col': "accounts", "doc": context.state.account.id, "fieldSets": fieldSets })
 			.then(res => {
 				context.commit("setAccount", res)
 				context.commit('setMsg', 'Saved')
