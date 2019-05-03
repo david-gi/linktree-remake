@@ -68,11 +68,10 @@
 		data() {
 			return {
 				advSettings: false,
-				section: null
+				section: null,
 			}
 		},
 		mounted(){
-			//this.open()
 		},
 		computed:{
 			...mapGetters([
@@ -131,7 +130,7 @@
 				this.loading1()
 				var fieldSets = [
 					["Type", this.section.Type],
-					["Title", this.section.Title],
+					["Title", this.section.Title ? this.section.Title : "."],
 					["Value", this.section.Value],
 					["Height", this.section.Height],
 					["Width", this.section.Width],

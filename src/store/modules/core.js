@@ -120,6 +120,9 @@ const actions = {
 				context.commit('setMsg', 'Saved')
 			}).catch(e => context.commit('setError', e+""))
 	},
+	commitAccount(context, x){
+		context.commit("setAccount", x)
+	},
 	usernameCheck: (context, x) => {
 		return new Promise((resolve, reject) => {
 			context.rootState.sectionsRef.where("Username", "==", x.toLowerCase()).get()
@@ -287,5 +290,5 @@ export default {
 	state,
 	mutations,
 	actions, 
-	getters
+	getters,
 }

@@ -16,7 +16,10 @@
 
 						<div class="form-group col-6 float-left">
 							<label>Avatar URL</label>
-							<input v-model="account.Avatar" type="text" class="form-control"  placeholder="http://www.example.com/image.jpg..."/>
+							<div class="btn btn-small btn-primary float-right p-0 pl-2 pr-2" @click="setGravitar">
+								<small>Use Gravitar</small>
+							</div>
+							<input id="avatarInp" v-model="account.Avatar" type="text" class="form-control"  placeholder="http://www.example.com/image.jpg..."/>
 						</div>
 
 						<div class="form-group col-6 float-left">
@@ -75,7 +78,7 @@
 					<div class="text-right row mt-3 ml-3 mr-3 justify-content-between">
 						<button type="button" class="btn btn-outline-danger d-absolute col-3 mr-3" @click="remove()">Delete</button>
 						<button type="button" class="btn btn-outline-secondary offset-2 col-3" @click="close()">Cancel</button>
-						<button type="button" class="btn btn-primary col-3" @click="save()">Save</button>
+						<button type="button" v-bind:disabled="!usernameValid || checkingUsername" class="btn btn-primary col-3" @click="save()">Save</button>
 					</div>
 				</form>
 			</div>
@@ -86,9 +89,11 @@
 <script>
 	import {mapActions, mapGetters} from 'vuex'
 	import {Slider} from 'vue-color'
+	import {MD5} from '../../utils/md5.js'
 	export default {
 		data() {
 			return {
+				oAccount: {},
 				usernameValid: true,
 				checkingUsername: false,
 				oUsername: "",
@@ -101,6 +106,7 @@
 		created(){
 			var tthis = this
 			setTimeout(() => {
+				for (var i in tthis.account) { tthis.oAccount[i] = tthis.account[i] } 
 				tthis.oUsername = this.account.Username 
 				tthis.linkColor = {hex: this.account.Link}
 				tthis.linkTextColor = {hex: this.account.LinkText}
@@ -132,6 +138,7 @@
 				'updateAccount',
 				//'deleteAccount',,
 				'usernameCheck',
+				'commitAccount',
 				'loading1',
 				'loading0'
 
@@ -140,6 +147,8 @@
 				$("#modalAccountWindow").modal({backdrop:false, show: true})
 			},
 			close(){
+				this.commitAccount(this.oAccount)
+				this.oAccount = {}
 				$("#modalAccountWindow").modal("hide")
 			},
 			save(){
@@ -164,6 +173,10 @@
 							$("#modalAccountWindow").modal("hide")
 							tthis.loading0()
 						})
+			},
+			setGravitar(){
+				var emailMd5 = MD5(this.account.Email)
+				this.account.Avatar = "https://www.gravatar.com/avatar/" + emailMd5 + ".png?s=160"
 			},
 			checkUsername(){
 				this.checkingUsername = true
