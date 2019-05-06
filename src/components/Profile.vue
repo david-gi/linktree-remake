@@ -6,9 +6,13 @@
 				<button class="btn btn-sm btn-outline-secondary float-right" @click="logOff()">Sign out</button>
 				<div class="rounded-circle" :style="avatarStyle">
 				</div>
+				<button @click="openAccountEdit()" style="margin-top:-70px;"
+					class="float-right btn btn-small bg-light btn-outline-dark text-dark p-0 pl-2 pr-2 pb-1 mr-n1 ">
+					<small>Edit Profile</small>
+				</button>
 			</div>
 			<div id="Banner" :style="bannerStyle" class="">
-				<img @click="openAccountEdit()" class="icon float-right ml-n5" height="26" width="38" src="src/assets/mod.svg" />
+
 				<h1>{{account.Title}}</h1>
 				<h2>
 					@{{account.Username}}
@@ -24,9 +28,10 @@
 					'col-sm-4': (sect.Width == 1), 'col-sm-6': (sect.Width == 2), 'col-sm-12': (sect.Width == 3)
 					}">
 				<div v-show="!sect.edit" :style="sectionStyle(sect)">
-					<img class="icon move float-left" height="26" width="38" src="src/assets/move.svg" />
-					<img @click="openEdit(index)" class="icon float-right" height="26" width="38" src="src/assets/mod.svg" />
-					
+					<button @click="openEdit(index)" style="margin-top:-3px;"
+						class="float-right btn btn-small bg-light btn-outline-dark text-dark p-0 pl-2 pr-2 pb-1 mr-n1 ">
+						<small>Edit</small>
+					</button>
 					{{sect.Title}}
 				</div>
 			</div>
@@ -227,9 +232,6 @@ export default {
 		border: 4px #fff solid;
 		float: left;
 		clear:none;
-	}
-	#Sections .section:hover{
-		opacity: .9;
 	}
 	#Sections .section div {
 		padding: 6px;

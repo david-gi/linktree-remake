@@ -16,15 +16,16 @@
 		</div>
 
 		<div id="Sections" class="row no-gutters justify-content-between">
-			<div v-for="sect in publicSections" :key="sect.Order" @click="linkClick(sect)"
-				class="section col-12" :class="{
+			<a v-for="sect in publicSections" :key="sect.Order" @click="linkClick(sect.id, sect.Type, sect.Value)"
+				class="section col-12 d-block" :class="{
 					'h-1': (sect.Height == 1), 'h-2': (sect.Height == 2), 'h-3': (sect.Height == 3),
 					'col-sm-4': (sect.Width == 1), 'col-sm-6': (sect.Width == 2), 'col-sm-12': (sect.Width == 3)
 					}">
 				<div :style="sectionStyle(sect)">
 					{{sect.Title}}
+					{{sect.Type}}
 				</div>
-			</div>
+			</a>
 		</div>
 
 	</div>
@@ -92,14 +93,17 @@ export default {
 
 				return style
 			},
-			linkClick({id, Type, Value}){
-				switch(Type){
-					case 0:
+			linkClick(id, Type, Value){
+				switch(Type+""){
+					case "0":
 						window.open(Value, '_blank')
-					case 1:
+						break;
+					case "1":
 						window.open("mailto:"+Value, '_self')
-					case 2:
+						break;
+					case "2":
 						window.open("tel:"+Value, '_self')
+						break;
 					default:
 						return
 				}

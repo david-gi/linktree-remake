@@ -50,27 +50,33 @@
 							<input v-model="account.Bio" type="text" class="form-control" />
 						</div>
 
-							<label class="col-12">Color Theme</label>
-						<div class="col-11 ml-3 p-0 border rounded d-inline-block pt-2">
-							<div class="form-group col-12 col-sm-6 float-left">
-								<label>Banner Text</label>
-								<input v-model="bannerTextColor.hex" type="text" class="form-control" />
-								<slider-picker v-model="bannerTextColor" class="col-12 mt-2 p-1" />
-							</div>
-							<div class="form-group col-12 col-sm-6 float-left">
-								<label>Banner Background</label>
-								<input v-model="bannerColor.hex" type="text" class="form-control" />
-								<slider-picker v-model="bannerColor" class="col-12 mt-2 p-1" />
-							</div>
-							<div class="form-group col-12 col-sm-6 float-left">
-								<label>Link Text</label>
-								<input v-model="linkTextColor.hex" type="text" class="form-control" />
-								<slider-picker v-model="linkTextColor" class="col-12 mt-2 p-1" />
-							</div>
-							<div class="form-group col-12 col-sm-6  float-left">
-								<label>Link Background</label>
-								<input v-model="linkColor.hex" type="text" class="form-control" />
-								<slider-picker v-model="linkColor" class="col-12 mt-2 p-1" />
+						<div v-show="!advSettings" class="form-group col-12 float-left p-0 m-0 ml-1">
+							<button type="button" class="form-control btn btn-sm text-left text-primary" @click="advOpen">Change color theme</button>
+						</div>
+						
+						<div v-show="advSettings">
+							<label class="col-12">Color theme</label>
+							<div class="col-11 ml-3 p-0 border rounded d-inline-block pt-2">
+								<div class="form-group col-12 col-sm-6 float-left">
+									<label>Banner Text</label>
+									<input v-model="bannerTextColor.hex" type="text" class="form-control" />
+									<slider-picker v-model="bannerTextColor" class="col-12 mt-2 p-1" />
+								</div>
+								<div class="form-group col-12 col-sm-6 float-left">
+									<label>Banner Background</label>
+									<input v-model="bannerColor.hex" type="text" class="form-control" />
+									<slider-picker v-model="bannerColor" class="col-12 mt-2 p-1" />
+								</div>
+								<div class="form-group col-12 col-sm-6 float-left">
+									<label>Link Text</label>
+									<input v-model="linkTextColor.hex" type="text" class="form-control" />
+									<slider-picker v-model="linkTextColor" class="col-12 mt-2 p-1" />
+								</div>
+								<div class="form-group col-12 col-sm-6  float-left">
+									<label>Link Background</label>
+									<input v-model="linkColor.hex" type="text" class="form-control" />
+									<slider-picker v-model="linkColor" class="col-12 mt-2 p-1" />
+								</div>
 							</div>
 						</div>
 							
@@ -93,6 +99,7 @@
 	export default {
 		data() {
 			return {
+				advSettings: false,
 				oAccount: {},
 				usernameValid: true,
 				checkingUsername: false,
@@ -146,10 +153,14 @@
 				for (var i in this.account) { this.oAccount[i] = this.account[i] } 
 				$("#modalAccountWindow").modal({backdrop:false, show: true})
 			},
+			advOpen(){
+				this.advSettings = true
+			},
 			close(){
 				var tthis = this
 				this.commitAccount(this.oAccount).then(()=>{
 					tthis.oAccount = {}
+					tthis.advSettings = false
 					tthis.$forceUpdate()
 				})
 				$("#modalAccountWindow").modal("hide")
@@ -174,6 +185,7 @@
 				this.updateAccount(updatedFieldSets)
 					.then(()=>{
 							$("#modalAccountWindow").modal("hide")
+							tthis.advSettings = false
 							tthis.loading0()
 						})
 			},

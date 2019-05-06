@@ -32,24 +32,30 @@
 						</div>	
 						
 						<div v-show="!advSettings" class="form-group col-12 float-left p-0 m-0 ml-1">
-							<button type="button" class="form-control btn btn-sm text-left text-primary" @click="advOpen">Advanced settings</button>
+							<button type="button" class="form-control btn btn-sm text-left text-primary" @click="advOpen">Size settings</button>
 						</div>
-						<div v-show="advSettings" class="form-group float-left col-12  col-sm-6 col-md-4 ">
-							<label>Width</label>
-							<select v-model="section.Width" class="form-control">
-								<option value="3">Full</option>
-								<option value="2">Half</option>
-								<option value="1">Third</option>
-							</select>	
-						</div>	
-						<div v-show="advSettings" class="form-group float-left col-12 col-sm-6 col-md-4 ">
-							<label>Height</label>
-							<select v-model="section.Height" class="form-control">
-								<option value="1">Short</option>
-								<option value="2">Medium</option>
-								<option value="3">Tall</option>
-							</select>	
-						</div>	
+
+						<div class="col-12" v-show="advSettings" >
+							<label class="col-12 ml-n3">Size settings</label>
+							<div class="col-11 p-0 border rounded d-inline-block pt-2">
+								<div class="form-group float-left col-12 col-sm-6 col-md-4  ml-n2">
+									<label>Width</label>
+									<select v-model="section.Width" class="form-control">
+										<option value="3">Full</option>
+										<option value="2">Half</option>
+										<option value="1">Third</option>
+									</select>	
+								</div>	
+								<div class="form-group float-left col-12 col-sm-6 col-md-4  ml-n2">
+									<label>Height</label>
+									<select v-model="section.Height" class="form-control">
+										<option value="1">Short</option>
+										<option value="2">Medium</option>
+										<option value="3">Tall</option>
+									</select>	
+								</div>	
+							</div>	
+					  </div>	
 					</div>
 					<div class="text-right row ml-3 mr-3 justify-content-between">
 						<button type="button" class="btn btn-outline-danger d-absolute col-12 col-sm-3 mr-3 mt-3" @click="remove()">Delete</button>
