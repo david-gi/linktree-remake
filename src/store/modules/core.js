@@ -58,9 +58,8 @@ const actions = {
 
 	autoLogin: (context, uid) => {
 	return new Promise((resolve, reject) => {
-		//firebase.auth().getRedirectResult()
-		firebase.auth().onAuthStateChanged(function(acc) {
-			if (acc) {
+		var loginFun = (acc) => {
+			if(acc){
 				console.log('logging in...')
 				var docRef = context.rootState.accountsRef.doc(acc.uid)
 				docRef.get()
@@ -95,9 +94,21 @@ const actions = {
 							})
 						}
 					}).catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
-			} else {
+			} else{
 				resolve(false)
 			}
+		}
+
+		//for 3rd party redirection
+		firebase.auth().getRedirectResult()
+		 .then(function(res){
+			 var acc = res.user
+			 loginFun(acc)
+			})
+		.catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed (redirect): " + e) })	
+		//if already logged in
+		firebase.auth().onAuthStateChanged(function(acc) {	
+			loginFun(acc)
 		})
 		
 	})
