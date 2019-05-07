@@ -57,61 +57,91 @@ const actions = {
 	},
 
 	autoLogin: (context, uid) => {
-	return new Promise((resolve, reject) => {
-		var loginFun = (acc) => {
-			if(acc){
-				console.log('logging in...')
-				var docRef = context.rootState.accountsRef.doc(acc.uid)
-				docRef.get()
-					.then(p => {
-						if(p.exists){
-							console.log('existing...')
-							var accData = p.data()
-							accData["id"] = acc.uid
-							context.commit('setAccount', accData)
-							context.commit('setAuth', true)
-							resolve(true)
-						} else{
-							console.log('new...')
-							var newAccount = {
-								Avatar: "",
-								Bio: "All in one place...",
-								Email: acc.email,
-								Location: "",
-								Plan: 1,
-								Title: "My Links",
-								Username: acc.uid,
-								Banner:"#354378",
-								BannerText: "#519DE8",
-								Link: "#354378",
-								LinkText: "#519DE8",
+		return new Promise((resolve, reject) => {
+			var loginFun = (acc) => {
+				if(acc){
+					console.log('logging in...')
+					var docRef = context.rootState.accountsRef.doc(acc.uid)
+					docRef.get()
+						.then(p => {
+							function grabNested(fieldName, defaultTxt){
+								try{
+									var res = acc[fieldName] 
+										? acc[fieldName] 
+										: (acc.providerData[0] 
+											? (acc.providerData[0][fieldName]
+												? acc.providerData[0][fieldName] 
+												: defaultTxt)
+											: defaultTxt)
+									return res
+								} catch(e) { return defaultTxt }
 							}
-							docRef.set(newAccount).then(res => {
-								newAccount["id"] = acc.uid
-								context.commit('setAccount', newAccount)
+							if(p.exists){
+								console.log('existing...')
+								var email = grabNested("email", "")
+								email = email == "" ? accData["Email"] : email
+								var accData = p.data()
+								accData["id"] = acc.uid
+								accData["Email"] = email,
+								context.commit('setAccount', accData)
 								context.commit('setAuth', true)
 								resolve(true)
-							})
-						}
-					}).catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
-			} else{
-				resolve(false)
+							} else{
+								console.log('new... '+JSON.stringify(acc))
+								var newAccount = {
+									Avatar: grabNested("photoURL", ""),
+									Bio: "All in one place...",
+									Email:  grabNested("email", ""),
+									Location: "",
+									Plan: 1,
+									Title:  grabNested("displayName", "My Links"),
+									Username:  grabNested("email", "").replace('@','-').replace('.','-'),
+									Banner:"#354378",
+									BannerText: "#519DE8",
+									Link: "#354378",
+									LinkText: "#519DE8",
+								}
+								if(newAccount.Email == "") { throw "Email permission denied by provider." }
+								docRef.set(newAccount).then(res => {
+									newAccount["id"] = acc.uid
+									context.commit('setAccount', newAccount)
+									context.commit('setAuth', true)
+									resolve(true)
+								})
+							}
+						}).catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
+				} else{
+					resolve(false)
+				}
+			}
+
+			//for 3rd party redirection
+			firebase.auth().getRedirectResult()
+			.then(function(res){
+				var acc = res.user
+				loginFun(acc)
+				})
+			.catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed (redirect): " + e) })	
+			//if already logged in
+			firebase.auth().onAuthStateChanged(function(acc) {	
+				loginFun(acc)
+			})
+			
+		})
+	},
+	linkedInLogin: (context) => {
+		//LinkedIn auth
+		var rUrl = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=867hna9fj37114"
+			+"&redirect_uri=https%3A%2F%2Flinkkle.appspot.com&scope=r_liteprofile%20r_emailaddress%20w_member_social"
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == XMLHttpRequest.DONE) {
+				alert(xhr.responseXML)//.code);
+				// awM85b1c0smgDIjH
 			}
 		}
-
-		//for 3rd party redirection
-		firebase.auth().getRedirectResult()
-		 .then(function(res){
-			 var acc = res.user
-			 loginFun(acc)
-			})
-		.catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed (redirect): " + e) })	
-		//if already logged in
-		firebase.auth().onAuthStateChanged(function(acc) {	
-			loginFun(acc)
-		})
-		
-	})
+		xhr.open("GET", rUrl, true);
+		xhr.send(null);
 	},
 	logout: (context) => {
 		firebase.auth().signOut().then(() => {

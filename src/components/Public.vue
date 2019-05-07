@@ -23,7 +23,6 @@
 					}">
 				<div :style="sectionStyle(sect)">
 					{{sect.Title}}
-					{{sect.Type}}
 				</div>
 			</a>
 		</div>
@@ -56,7 +55,8 @@ export default {
 				'publicSections'
 			]),
 			avatarStyle(){
-				var avatarUrl = this.publicAccount.Avatar ? this.publicAccount.Avatar : "./src/assets/profile.jpg"
+				var avatarUrl = this.publicAccount.Avatar || this.publicAccount.Avatar == ""
+								? this.publicAccount.Avatar : "./src/assets/profile.jpg"
 				return { backgroundImage: 'url(\''+ avatarUrl +'\')' }
 			},
 			bannerStyle(){

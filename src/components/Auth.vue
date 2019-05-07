@@ -17,10 +17,10 @@
 							<div id="fbBtn" class="rounded border border-white" @click="doLogin(2)"></div>	
 						</div>	
 						<div class="float-left col-1 ml-2 mr-2">
-							<div disabled id="twBtn" class="rounded border border-white" @click="doLogin(3)"></div>	
+							<div id="twBtn" class="rounded border border-white" @click="doLogin(3)"></div>	
 						</div>
 						<div class="float-left col-1 ml-2">
-							<div disabled id="inBtn" class="rounded border border-white" @click="doLogin(4)"></div>	
+							<div id="inBtn" class="rounded border border-white" @click="doLogin(4)"></div>	
 						</div>	
 				</div>
 				<div class="bg-primary text-center mt-3">
@@ -41,12 +41,12 @@
 						</button>	
 					</div>	
 					<div class="col-12 mb-3">
-						<button disabled class="btn btn-outline-light w-100" @click="doLogin(3)">
+						<button class="btn btn-outline-light w-100" @click="doLogin(3)">
 							Sign Up with your <strong class="d-inline-block">Twitter account</strong>
 						</button>	
 					</div>	
 					<div class="col-12 mb-3">
-						<button disabled class="btn btn-outline-light w-100" @click="doLogin(3)">
+						<button class="btn btn-outline-light w-100" @click="doLogin(4)">
 							Sign Up with your <strong class="d-inline-block">LinkedIn account</strong>
 						</button>	
 					</div>	
@@ -94,10 +94,12 @@ export default {
 		methods: {
 			...mapActions([
 				'autoLogin',
+				'linkedInLogin',
 				'loading0',
 				'loading1'
 			]),
 			doLogin(provId) {
+				var isLinkedIn = false
 				var provider = null
 				switch(provId){
 					case 1:
@@ -109,11 +111,18 @@ export default {
 					case 3:
 						provider = new firebase.auth.TwitterAuthProvider()
 						break;
+					case 4:
+						isLinkedIn = true
+						break;
 				}
-				firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-					.then(function() {
-						firebase.auth().signInWithRedirect(provider)
-					})
+				if(!isLinkedIn){
+					firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+						.then(function() {
+							firebase.auth().signInWithRedirect(provider)
+						})
+				} else {
+					this.linkedInLogin()
+				}
 			},
 		}
 	}
@@ -157,6 +166,10 @@ export default {
 		height:32px;
 	}
 	#gBtn:hover, #inBtn:hover, #twBtn:hover, #fbBtn:hover{
-		opacity: .9;
+		opacity: .7;
+	}
+	#gBtn:active, #inBtn:active, #twBtn:active, #fbBtn:active{
+		opacity: .7;
+		border-color: blueviolet !important;
 	}
 </style>

@@ -88,7 +88,8 @@ export default {
 				'sections'
 			]),
 			avatarStyle(){
-				var avatarUrl = this.account.Avatar ? this.account.Avatar : "./src/assets/profile.jpg"
+				var avatarUrl = this.account.Avatar || this.publicAccount.Avatar == ""
+								? this.account.Avatar : "./src/assets/profile.jpg"
 				return { backgroundImage: 'url(\''+ avatarUrl +'\')' }
 			},
 			bannerStyle(){
