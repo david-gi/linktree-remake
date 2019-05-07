@@ -32,22 +32,22 @@
 				<div class="modal-body bg-primary rounded">
 					<div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(1)">
-							Sign Up with your <strong class="d-inline-block">Google account</strong>
+							Sign Up using <strong class="d-inline-block">Google</strong>
 						</button>	
 					</div>	
 					<div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(2)">
-							Sign Up with your <strong class="d-inline-block">Facebook account</strong>
+							Sign Up using <strong class="d-inline-block">Facebook</strong>
 						</button>	
 					</div>	
 					<div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(3)">
-							Sign Up with your <strong class="d-inline-block">Twitter account</strong>
+							Sign Up using <strong class="d-inline-block">Twitter</strong>
 						</button>	
 					</div>	
 					<div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(4)">
-							Sign Up with your <strong class="d-inline-block">LinkedIn account</strong>
+							Sign Up using <strong class="d-inline-block">LinkedIn</strong>
 						</button>	
 					</div>	
 				</div>
@@ -116,7 +116,7 @@ export default {
 						break;
 				}
 				if(!isLinkedIn){
-					firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+					firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 						.then(function() {
 							firebase.auth().signInWithRedirect(provider)
 						})

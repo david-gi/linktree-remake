@@ -8,7 +8,7 @@
 				</div>
 				<button @click="openAccountEdit()" style="margin-top:-70px;"
 					class="float-right btn btn-small bg-light btn-outline-dark text-dark p-0 pl-2 pr-2 pb-1 mr-n1 ">
-					<small>Edit Profile</small>
+					<small>Edit</small>
 				</button>
 			</div>
 			<div id="Banner" :style="bannerStyle" class="">
@@ -29,7 +29,7 @@
 					}">
 				<div v-show="!sect.edit" :style="sectionStyle(sect)">
 					<button @click="openEdit(index)" style="margin-top:-3px;"
-						class="float-right btn btn-small bg-light btn-outline-dark text-dark p-0 pl-2 pr-2 pb-1 mr-n1 ">
+						class="float-right btn btn-small bg-light btn-outline-dark text-dark p-0 pl-2 pr-2 pb-1 ">
 						<small>Edit</small>
 					</button>
 					{{sect.Title}}

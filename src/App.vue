@@ -129,7 +129,7 @@ export default {
     
     .loading{
         top:0;
-        padding-top:10%;
+        padding-top:20%;
         background-color: rgba(255, 255, 255, 0.3);
         width: 100%;
         height: 100%;
