@@ -135,7 +135,7 @@
 			save(){
 				var tthis = this
 				this.loading1()
-				var nll = x => { x && x != undefined ? x : "" }
+				var nll = x => { return x != null && x != undefined ? x : "" }
 				var fieldSets = [
 					["Type", this.section.Type],
 					["Title", nll(this.section.Title)],
@@ -143,6 +143,7 @@
 					["Height", this.section.Height],
 					["Width", this.section.Width],
 				]
+
 				this.updateSection({doc: this.section.id, fieldSets: fieldSets})
 					.then(()=>{
 						//setTimeout(function(){

@@ -169,7 +169,7 @@
 					return
 				}
 				var tthis = this
-				var nll = x => { x && x != undefined ? x : "" }
+				var nll = x => { return x != null && x != undefined ? x : "" }
 				this.loading1()
 				var updatedFieldSets = [
 					["Avatar", nll(this.account.Avatar)],

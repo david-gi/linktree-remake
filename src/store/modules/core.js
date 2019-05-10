@@ -61,21 +61,42 @@ const actions = {
 			var loginFun = (acc) => {
 				if(acc){
 					console.log('logging in...')
+					
+					function checkEmailValidation(existing){
+						acc.providerData.forEach(function (profile) {
+							if(profile.providerId.toLowerCase() == "password"){
+								if(!acc.emailVerified){
+									firebase.auth().signOut().then(() => {
+										if(existing){
+											context.commit('setError', 'Please verify your email.')
+										}
+										console.log("Email not verified...")
+										context.commit('setAuth', false)
+										context.commit("setAccount", null)
+										resolve(true)
+									})
+								}
+							}
+						})
+					}
+
+					function grabNested(fieldName, defaultTxt){
+						try{
+							var res = acc[fieldName] 
+								? acc[fieldName] 
+								: (acc.providerData[0] 
+									? (acc.providerData[0][fieldName]
+										? acc.providerData[0][fieldName] 
+										: defaultTxt)
+									: defaultTxt)
+							return res
+						} catch(e) { return defaultTxt }
+					}
+
 					var docRef = context.rootState.accountsRef.doc(acc.uid)
 					docRef.get()
 						.then(p => {
-							function grabNested(fieldName, defaultTxt){
-								try{
-									var res = acc[fieldName] 
-										? acc[fieldName] 
-										: (acc.providerData[0] 
-											? (acc.providerData[0][fieldName]
-												? acc.providerData[0][fieldName] 
-												: defaultTxt)
-											: defaultTxt)
-									return res
-								} catch(e) { return defaultTxt }
-							}
+
 							if(p.exists){
 								console.log('existing...')
 								var email = grabNested("email", "")
@@ -85,6 +106,7 @@ const actions = {
 								accData["Email"] = email
 								context.commit('setAccount', accData)
 								context.commit('setAuth', true)
+								checkEmailValidation(true)
 								resolve(true)
 							} else{
 								var newAccount = {
@@ -105,6 +127,7 @@ const actions = {
 									newAccount["id"] = acc.uid
 									context.commit('setAccount', newAccount)
 									context.commit('setAuth', true)
+									checkEmailValidation(false)
 									resolve(true)
 								})
 							}
@@ -186,13 +209,19 @@ const actions = {
 				reject("Unable to authenticate, please try agian.")
 			}
 		})
+	},	
+	passwordReset: (context, email) => {
+		firebase.auth().sendPasswordResetEmail(email).then(() => {
+			context.commit('setMsg', 'Password reset email sent')
+		})
+		.catch(e => { console.log(e) })
 	},
 	logout: (context) => {
 		firebase.auth().signOut().then(() => {
 			console.log("Signed out...")
 			context.commit('setAuth', false)
 			context.commit("setAccount", null)
-			context.commit('setMsg', 'Signed out')
+			context.commit('setMsg', 'Signing out')
 		})
 		.catch(e => { console.log(e) })
 	},
@@ -248,7 +277,6 @@ const actions = {
 			}
 			docRef.get()
 				.then(res => {	
-					console.log(JSON.stringify(fieldSets))			
 					if(res.exists){
 						var updated = {}
 						fieldSets.forEach(set => {

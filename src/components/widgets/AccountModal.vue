@@ -13,25 +13,29 @@
 				</div>
 				<form class="modal-body">
 					<div class="bg-white text-dark clearfix">
-
-						<div class="form-group col-12 col-sm-6 float-left">
-							<label>Email</label>
-							<div class="text-muted pt-1">{{ account.Email }}</div>
-						</div>
-						 
-						<div class="form-group col-12 col-sm-6 float-left">
-							<label>Plan</label>
-							<div class="text-success pt-1">
-								{{ planName }} account
-								<button v-show="account.Plan < 3" class="btn btn-sm btn-success mt-n1 ml-2">
-									<small class="font-weight-bold">Upgrade now!</small></button>
+						<div class="row no-gutters ml-3">
+							<div class="form-group col-12 col-sm-6 float-left">
+								<label>Email</label>
+								<div class="text-muted pt-1">
+									{{ account.Email }}
+									<button type="button" class="btn btn-sm btn-secondary ml-2" @click="passReset()"><small>Reset Password</small></button>
+								</div>
+							</div>
+							
+							<div class="form-group col-12 col-sm-6 float-left">
+								<label>Plan</label>
+								<div class="text-success pt-1">
+									{{ planName }} account
+									<button v-show="account.Plan < 3" class="btn btn-sm btn-success mt-n1 ml-2">
+										<small class="font-weight-bold">Upgrade now!</small></button>
+								</div>
 							</div>
 						</div>
 
-						<div class="form-group col-12 col-sm-6 float-left mt-3">
+						<div class="form-group col-12 col-sm-4 float-left mt-4">
 							<label>Link this account to:</label>
 						</div>
-						<div class="form-group col-12 col-sm-6 float-left">
+						<div class="form-group col-12 col-sm-8 float-left">
 								<div class="float-left mr-3 mt-3">
 									<div id="gBtn" class="smBtn rounded border border-white" @click="doLinking(1)"></div>	
 								</div>	
@@ -92,10 +96,8 @@
 		},
 		methods: {
 			...mapActions([
-				'updateAccount',
 				'deleteAccount',,
-				'usernameCheck',
-				'commitAccount',
+				'passwordReset',
 				'loading1',
 				'loading0'
 
@@ -104,8 +106,10 @@
 				$("#modalAccountWindow").modal({backdrop:false, show: true})
 			},
 			close(){
-				var tthis = this
 				$("#modalAccountWindow").modal("hide")
+			},
+			passReset(){
+				this.passwordReset(this.account.Email)
 			},
 			doLinking(provId){
 				var provider = null
@@ -128,19 +132,19 @@
 				})
 			},
 			predeleteClick(){
+				var tthis = this
 				setTimeout(() =>{
-					this.predelete = false
+					tthis.predelete = false
 					setTimeout(() =>{
-						this.deleteWait = false
+						tthis.deleteWait = false
 					}, 5000)
 					setTimeout(() =>{
-						this.predelete = true
+						tthis.predelete = true
 					}, 9000)
 				}, 200)
 			},
 			remove(){
-				var tthis = this
-				tthis.loading1()
+				this.loading1()
 				this.deleteAccount()
 			},
 		}

@@ -4,11 +4,12 @@
 			<div class="modal-content bg-primary text-white rounded pb-1" style="min-width:280px;">
 				<div class="border-bottom text-center bg-primary p-3">
 					<h4 class="modal-title font-weight-bold">
-						<span v-show="showLogin">Login to Linkkle</span>
-						<span v-show="!showLogin">Sign Up with Linkkle</span>
+						<span v-show="showLogin && !emailRegd">Login to Linkkle</span>
+						<span v-show="!showLogin && !emailRegd">Sign Up with Linkkle</span>
+						<span v-show="emailRegd">Sign up successful!</span>
 					</h4>
 				</div>
-				<div v-show="showLogin" class="modal-body bg-primary row no-gutters justify-content-center pb-0 m-auto" style="max-width:500px;">
+				<div v-show="showLogin && !emailRegd" class="modal-body bg-primary row no-gutters justify-content-center pb-0 m-auto" style="max-width:500px;">
 					<div class="col-12 mt-2 form-group">
 						<div class="col-12 p-3 pt-4 pb-3 rounded d-inline-block emailBlock clearfix">
 							
@@ -20,6 +21,17 @@
 							</div>
 							<div class="col-12 text-right mt-2 float-left">
 								<button @click="doLogin(5)" class="w-100 btn btn-sm border border-primary btn-success font-weight-bold">Login</button>
+							</div>
+
+							<button v-show="!showPassReset" @click="togglePassReset" class="btn btn-link text-white ml-1"><i><small>Forgot your password?</small></i></button>
+							<div class="col-12 p-3 border d-inline-block rounded mt-3" v-if="showPassReset">
+								<label class="col-12 m-0">Send password reset email:</label>
+								<div class="col-12 col-sm-10 mt-2 float-left">
+									<input v-model="resetEmailAddr" type="email" class="form-control form-control-sm"  placeholder="Your email..."/>
+								</div>
+								<div class="col-2 offset-sm-0 col-sm-2 mt-2 float-left">
+									<button @click="passReset()" class="btn btn-sm border border-primary btn-success font-weight-bold">Send</button>
+								</div>
 							</div>
 
 							<div class="w-75 m-auto">
@@ -44,14 +56,14 @@
 					</div>	
 				</div>
 
-				<div v-show="showLogin" class="bg-primary text-center mb-3">
+				<div v-show="showLogin && !emailRegd" class="bg-primary text-center mb-3">
 					<span class="text-light">
 						<i>Don't have an account?</i> 
 						<br><button @click="toggleLogin()" class="mt-2 btn btn-warning font-weight-bold">Sign up now!</button>
 					</span>
 				</div>
 
-				<div v-show="!showLogin" class="modal-body bg-primary rounded m-auto" style="max-width:500px;">
+				<div v-show="!showLogin && !emailRegd" class="modal-body bg-primary rounded m-auto" style="max-width:500px;">
 					<div class="col-12 mb-3 mt-1 form-group">
 						<div class="col-12 p-2 pb-3 rounded d-inline-block emailBlock">
 							<form>
@@ -98,12 +110,20 @@
 					</div-->	
 				</div>
 				
-
-				<div v-show="!showLogin" class="bg-primary text-center mb-3">
+				<div v-show="!showLogin && !emailRegd" class="bg-primary text-center mb-3">
 					<span class="text-light">
 						<i>Already have an account?</i> 
 						<br><button @click="toggleLogin()" class="mt-2 btn border btn-primary">Go to login</button>
 					</span>
+				</div>
+
+				<div v-show="emailRegd" class="p-3 text-center">
+					<br>
+					<h4>Thanks for signing up with Linkkle!</h4>
+					<br>
+					<p>Please check your email for a Linkkle Verification email.</p>
+					<p>If you don't see it after five minutes, <br>please check your Spam folder.</p>
+					<br>
 				</div>
 
 			</div>
@@ -118,6 +138,9 @@ export default {
 		data() {
 			return {
 				showLogin: true,
+				emailRegd: false,
+				showPassReset: false,
+				resetEmailAddr: "",
 				emailAddr: "",
 				pass: "",
 				emailAddrReg: "",
@@ -129,6 +152,7 @@ export default {
 			//linkin// code: { type: String, required: false },
 		},
 		created(){
+			tthis.loading0()
 		},
 		mounted(){
 			this.loading1()
@@ -151,7 +175,6 @@ export default {
 						.then((res)=>{ afterLogin(res) })
 				} else {
 					if(window.location.search.indexOf("logout") != -1){ 
-						console.log(window.location.search.indexOf("logout"))
 						$("#modalLoginWindow").modal({backdrop:false, show: true})
 						this.loading0()
 					} else {
@@ -163,7 +186,7 @@ export default {
 		computed: {
 			...mapGetters([
 				'auth',
-				'inId'
+				'inId',
 			]),
 			emailValid(){
 				var inp = document.getElementById('emailAddrInp')
@@ -176,6 +199,7 @@ export default {
 				'emailSignUp',
 				'emailLogin',
 				'linkedInLogin',
+				'passwordReset',
 				'loading0',
 				'loading1',
 				'setMsg'
@@ -234,15 +258,24 @@ export default {
 						break;
 				}
 			},
+			togglePassReset(){
+				this.showPassReset = !this.showPassReset
+			},
+			passReset(){
+				var tthis = this
+				this.passwordReset(this.resetEmailAddr).then(()=> {
+					tthis.showPassReset = false
+				})
+			},
 			emailReg() {
 				this.loading1()
 				var tthis = this
 				if(this.emailValid && this.passReg){
 					this.emailSignUp({e: this.emailAddrReg, p: this.passReg}).then(r=>{
-						firebase.auth().currentUser.sendEmailVerification({ url: 'https://Linkkle.com/#/login' })
+						firebase.auth().currentUser.sendEmailVerification({ url: 'https://linkkle.appspot.com/#/login' })
 						.then(function() {
 							tthis.loading0()
-							tthis.setMsg("Email Verification Sent!")
+							tthis.emailRegd = true
 						})
 					})
 				} 

@@ -128,7 +128,6 @@ export default {
 				var tthis = this
 				this.loading1()
 				this.logout().then(()=>{
-					tthis.loading0()
 					window.location.reload()
 				})
 			},

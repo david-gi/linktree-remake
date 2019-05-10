@@ -19,9 +19,9 @@
     	<div class="row clearfix">
     	</div>
 
-        <div v-show="msg" class="row no-gutters">
-            <div class="fixed-bottom msg">
-                <small>{{msg}}...</small>
+        <div v-show="msg" class="row no-gutters text-center">
+            <div class="fixed-bottom font-weight-bold rounded-top w-75 m-auto text-white p-2 bg-primary">
+                {{msg}}... 
             </div>
         </div>
 
@@ -93,11 +93,6 @@ export default {
 
     .error{
         padding:9px;
-    }
-    .msg{
-        color: #333;
-        text-shadow: #fff 0 0 5px;
-        padding:0px 0px 4px 9px;
     }
     .listMenu li{
         display: inline-block;
