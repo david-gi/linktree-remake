@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="col-12 mt-2 text-center">
+        <div class="col-12 mt-2 text-center"  v-show="!isAuth">
                 <a class="col-3" src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
                 <ul class="col-7 offset-2 listMenu d-inline align-bottom">
                     <li><a href="/">Home</a></li>
@@ -10,7 +10,7 @@
                 </ul>
         </div>
 
-    	<div class="row">
+    	<div class="row" style="min-height:200px;">
             <transition name="slide" mode="out-in" class="position-absolute">
                 <router-view class=""></router-view>
             </transition>
@@ -29,7 +29,7 @@
             <div class="col-12x text-center text-white fixed-bottom error bg-danger">{{error}}</div>
         </div>
 
-		<div id="Footer" class="text-center  mb-1 col-12">
+		<div id="Footer" class="text-center mb-1 col-12">
             <div style="min-width:330px;">
                 <a src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
                 <ul class="listMenu">
@@ -60,6 +60,9 @@ export default {
     computed: {
         ...mapGetters([
         ]),
+        isAuth(){
+            return this.$store.state.auth
+        },
         error(){
             return this.$store.state.error
         },

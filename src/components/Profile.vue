@@ -2,12 +2,16 @@
 	<div id="Container" class="col-12 clearfix" v-if="dataLoaded">
 		<div id="Header" class="">
 			<div id="Avatar" class="col-12">
-				<button class="btn btn-sm btn-outline-primary float-left" @click="preview()">View Live</button>
-				<button class="btn btn-sm btn-outline-secondary float-right" @click="logOff()">Sign out</button>
+				<button class="btn btn-sm btn-outline-primary float-left ml-n2 mt-0" @click="openAccountEdit()">Settings</button>
+				<button class="btn btn-sm btn-outline-secondary float-right mt-0" @click="logOff()">Logout</button>
 				<div class="rounded-circle" :style="avatarStyle">
 				</div>
-				<button @click="openAccountEdit()" style="margin-top:-70px;"
-					class="float-right btn btn-small bg-light btn-outline-dark text-dark p-0 pl-2 pr-2 pb-1 mr-n1 ">
+				<button @click="preview()" style="margin-top:-73px;"
+					class="float-left btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 ml-n2 ">
+					<small>Preview</small>
+				</button>
+				<button @click="openProfileEdit()" style="margin-top:-73px;"
+					class="float-right btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 mr-n2 ">
 					<small>Edit</small>
 				</button>
 			</div>
@@ -29,7 +33,7 @@
 					}">
 				<div v-show="!sect.edit" :style="sectionStyle(sect)">
 					<button @click="openEdit(index)" style="margin-top:-3px;"
-						class="float-right btn btn-small bg-light btn-outline-dark text-dark p-0 pl-2 pr-2 pb-1 ">
+						class="float-right btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 ml-3 mr-n1">
 						<small>Edit</small>
 					</button>
 					{{sect.Title}}
@@ -38,11 +42,11 @@
 		</div>
 
 		<div class="clearfix">
-			<div class="addBtn text-center p-0 pb-1" @click="newSection()">+</div>
+			<div class="rowBtn text-center p-0 pb-1 pl-2" @click="newSection()"><span class="align-top d-inline-block pt-1">+</span><small class="align-middle d-inline-block"><small>Add</small></small></div>
 		</div>
 
-	
 		<accountModal ref="accountModal"></accountModal>
+		<profileModal ref="profileModal"></profileModal>
 		<editModal ref="editModal"></editModal>
 	</div>
 </template>
@@ -50,6 +54,7 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import AccountModal from './widgets/AccountModal.vue'
+import ProfileModal from './widgets/ProfileModal.vue'
 import EditModal from './widgets/EditModal.vue'
 export default {
 		data() {
@@ -62,22 +67,21 @@ export default {
 		},
 		components: {
 			accountModal: AccountModal,
+			profileModal: ProfileModal,
 			editModal: EditModal
 		},
 		created(){
 			var tthis = this
 			this.loading1()
-			this.autoLogin().then(res =>{
-				if(!res && !this.auth){
-					this.loading0()
-					window.location.replace('#/login')
-				} else {
-					tthis.getSections().then(() => {
-						this.loading0()
-						tthis.dataLoaded = true
-					})
-				}
-			})
+			if(!this.auth){
+				this.loading0()
+				window.location.replace('#/login')
+			} else {
+				this.getSections().then(() => {
+					tthis.loading0()
+					tthis.dataLoaded = true
+				})
+			}
 		},
 		mounted(){
 		},
@@ -121,8 +125,11 @@ export default {
 				window.open('#/'+this.account.Username, '_blank')
 			},
 			logOff(){
+				var tthis = this
+				this.loading1()
 				this.logout().then(()=>{
-					window.location.replace('#/login')
+					tthis.loading0()
+					window.location.reload()
 				})
 			},
 			refreshSections: function (){
@@ -147,6 +154,12 @@ export default {
 				var tthis = this
 				setTimeout(function(){
 						tthis.$refs.accountModal.open()
+					}, 500)
+			},
+			openProfileEdit(){
+				var tthis = this
+				setTimeout(function(){
+						tthis.$refs.profileModal.open()
 					}, 500)
 			},
 			openEdit(index){
@@ -267,7 +280,7 @@ export default {
 		border-radius: 2px;
 		background-color: rgba(255, 255, 255, 0.5);
 	}
-	.addBtn{
+	.rowBtn{
 		cursor: pointer;
 		font-size: 1.6em;
 		font-weight: bold;
@@ -275,11 +288,15 @@ export default {
 		border: 1px #bbb solid;
 		margin:3px;
 	}
-	.addBtn:hover {
+	.rowBtn.small{
+		font-size: 1em;
+		font-weight: normal;
+	}
+	.rowBtn:hover {
 		border: 1px #519DE8 solid;
 		color: #519DE8;
 	}
-	.addBtn:active {
+	.rowBtn:active {
 		opacity: 1;
 		color: #fff;
 		background-color: #519DE8;

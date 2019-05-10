@@ -3,7 +3,7 @@
 		<div class="modal-dialog modal-lg rounded mt-5 pt-3"  role="document">
 			<div class="modal-content bg-primary text-white rounded pb-1" style="min-width:280px;">
 				<div class="border-bottom text-center bg-primary p-3">
-					<h4 class="modal-title">
+					<h4 class="modal-title font-weight-bold">
 						<span v-show="showLogin">Login to Linkkle</span>
 						<span v-show="!showLogin">Sign Up with Linkkle</span>
 					</h4>
@@ -134,23 +134,29 @@ export default {
 			this.loading1()
 			var tthis = this
 			function afterLogin(res){
-					tthis.loading0()
-					if(res || tthis.isLoggedIn){
-						window.location.replace("#/edit")
-					} else{
-						$("#modalLoginWindow").modal({backdrop:false, show: true})
-					}
+				tthis.loading0()
+				if(res || tthis.auth){
+					window.location.replace("#/edit")
+				} else{
+					$("#modalLoginWindow").modal({backdrop:false, show: true})
+				}
 			}
 			var tthis = this
-			if(this.isLoggedIn){
+			if(this.auth){
 				this.loading0()
 				window.location.replace("#/edit")
 			} else {
-				if(false){ //this.code){
+				if(false){ //linkedin// this.code){
 					this.linkedInLogin(this.code)
 						.then((res)=>{ afterLogin(res) })
 				} else {
-					this.autoLogin().then((res)=>{ afterLogin(res) })
+					if(window.location.search.indexOf("logout") != -1){ 
+						console.log(window.location.search.indexOf("logout"))
+						$("#modalLoginWindow").modal({backdrop:false, show: true})
+						this.loading0()
+					} else {
+						this.autoLogin().then((res)=>{ var r = afterLogin(res) })
+					}
 				}
 			}
 		},
@@ -159,9 +165,6 @@ export default {
 				'auth',
 				'inId'
 			]),
-			isLoggedIn(){
-				return this.auth
-			},
 			emailValid(){
 				var inp = document.getElementById('emailAddrInp')
 				return inp ? inp.checkValidity() : false
@@ -169,13 +172,13 @@ export default {
 		},
 		methods: {
 			...mapActions([
-				'logout',
 				'autoLogin',
 				'emailSignUp',
 				'emailLogin',
 				'linkedInLogin',
 				'loading0',
-				'loading1'
+				'loading1',
+				'setMsg'
 			]),
 			toggleLogin(){
 				this.showLogin = !this.showLogin
@@ -232,13 +235,15 @@ export default {
 				}
 			},
 			emailReg() {
+				this.loading1()
 				var tthis = this
 				if(this.emailValid && this.passReg){
 					this.emailSignUp({e: this.emailAddrReg, p: this.passReg}).then(r=>{
-						setTimeout(function(){
+						firebase.auth().currentUser.sendEmailVerification({ url: 'https://Linkkle.com/#/login' })
+						.then(function() {
 							tthis.loading0()
-							window.location.replace("#/edit")
-						}, 1000)
+							tthis.setMsg("Email Verification Sent!")
+						})
 					})
 				} 
 			}

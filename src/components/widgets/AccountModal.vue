@@ -1,6 +1,6 @@
 <template>
 	<div v-if="account" class="modal fade" id="modalAccountWindow" tabindex="-1" role="dialog"  aria-hidden="true">
-		<div class="modal-dialog modal-lg modal-dialog-centered"  role="document">
+		<div class="modal-dialog modal-lg modal-dialog-centered"  role="document" style=" max-width:600px;">
 			<div class="modal-content bg-light border border-primary" 
 				style="box-shadow: 0px 0px 20px #666; min-width:280px;">
 				<div class="modal-header text-white bg-primary rounded-0">
@@ -15,76 +15,46 @@
 					<div class="bg-white text-dark clearfix">
 
 						<div class="form-group col-12 col-sm-6 float-left">
-							<label>Avatar URL</label>
-							<div class="btn btn-small btn-primary float-right p-0 pl-2 pr-2" @click="setGravitar">
-								<small>Use Gravitar</small>
-							</div>
-							<input id="avatarInp" v-model="account.Avatar" type="text" class="form-control"  placeholder="http://www.example.com/image.jpg..."/>
-						</div>
-
-						<div class="form-group col-12 col-sm-6 float-left">
-							<label>Name</label>
-							<input v-model="account.Title" type="text" class="form-control" />
-						</div>
-
-						<div class="form-group col-12 col-sm-6 float-left">
-							<label>Username</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<div class="input-group-text">@</div>
-								</div>
-								<input v-model="account.Username" type="text" class="form-control" @change="checkUsername" 
-									:class="{'border-danger': !usernameValid && !checkingUsername, 'border-success': usernameValid, 'border-warning': checkingUsername}" />
-							</div>
-								<div v-show="checkingUsername" class="text-warning mb-n5 float-right"><small>Checking...</small></div>
-								<div v-show="!usernameValid && !checkingUsername" class="text-danger mb-n5 float-right"><small>Already used!</small></div>
+							<label>Email</label>
+							<div class="text-muted pt-1">{{ account.Email }}</div>
 						</div>
 						 
 						<div class="form-group col-12 col-sm-6 float-left">
 							<label>Plan</label>
-							<div class="text-muted pt-1">{{ planName }} account</div>
-						</div>
-
-						<div class="form-group col-12  float-left">
-							<label>Bio</label>
-							<input v-model="account.Bio" type="text" class="form-control" />
-						</div>
-
-						<div v-show="!advSettings" class="form-group col-12 float-left p-0 m-0 ml-1">
-							<button type="button" class="form-control btn btn-sm text-left text-primary" @click="advOpen">Change color theme</button>
-						</div>
-						
-						<div v-show="advSettings">
-							<label class="col-12">Color theme</label>
-							<div class="col-11 ml-3 p-0 border rounded d-inline-block pt-2">
-								<div class="form-group col-12 col-sm-6 float-left">
-									<label>Banner Text</label>
-									<input v-model="bannerTextColor.hex" type="text" class="form-control" />
-									<slider-picker v-model="bannerTextColor" class="col-12 mt-2 p-1" />
-								</div>
-								<div class="form-group col-12 col-sm-6 float-left">
-									<label>Banner Background</label>
-									<input v-model="bannerColor.hex" type="text" class="form-control" />
-									<slider-picker v-model="bannerColor" class="col-12 mt-2 p-1" />
-								</div>
-								<div class="form-group col-12 col-sm-6 float-left">
-									<label>Link Text</label>
-									<input v-model="linkTextColor.hex" type="text" class="form-control" />
-									<slider-picker v-model="linkTextColor" class="col-12 mt-2 p-1" />
-								</div>
-								<div class="form-group col-12 col-sm-6  float-left">
-									<label>Link Background</label>
-									<input v-model="linkColor.hex" type="text" class="form-control" />
-									<slider-picker v-model="linkColor" class="col-12 mt-2 p-1" />
-								</div>
+							<div class="text-success pt-1">
+								{{ planName }} account
+								<button v-show="account.Plan < 3" class="btn btn-sm btn-success mt-n1 ml-2">
+									<small class="font-weight-bold">Upgrade now!</small></button>
 							</div>
+						</div>
+
+						<div class="form-group col-12 col-sm-6 float-left mt-3">
+							<label>Link this account to:</label>
+						</div>
+						<div class="form-group col-12 col-sm-6 float-left">
+								<div class="float-left mr-3 mt-3">
+									<div id="gBtn" class="smBtn rounded border border-white" @click="doLinking(1)"></div>	
+								</div>	
+								<div class="float-left ml-3 mr-3 mt-3">
+									<div id="fbBtn" class="smBtn rounded border border-white" @click="doLinking(2)"></div>	
+								</div>	
+								<div class="float-left  ml-3 mr-3x mt-3">
+									<div id="twBtn" class="smBtn rounded border border-white" @click="doLinking(3)"></div>	
+								</div>
+								<!--div class="float-left col-1 ml-3">
+									<div id="inBtn" class="smBtn rounded border border-white" @click="doLinking(4)"></div>	
+								</div-->
 						</div>
 							
 					</div>
-					<div class="text-right row ml-3 mr-3 justify-content-between">
-						<button type="button" class="btn btn-outline-danger d-absolute col-12 col-sm-3 mt-3 mr-3" @click="remove()">Delete</button>
-						<button type="button" class="btn btn-outline-secondary offset-sm-2 col-12 col-sm-3 mt-3" @click="close()">Cancel</button>
-						<button type="button" v-bind:disabled="!usernameValid || checkingUsername" class="btn btn-primary col-12 col-sm-3 mt-3" @click="save()">Save</button>
+					<div class="text-rightx row ml-3 mr-3 justify-content-betweenx">
+						<button v-show="predelete" type="button" class="btn btn-outline-danger col-12 col-sm-6 mt-3" @click="predeleteClick()">Delete Acccount</button>
+						<button v-show="!predelete" :disabled="deleteWait" type="button" class="btn btn-sm btn-danger border-warning text-warning font-weight-bold float-right col-12 col-sm-6 mt-3" 
+							@dblclick="remove()">
+							<span v-show="deleteWait">Wait...</span>
+							<span v-show="!deleteWait">Double-click to permanently Delete!</span>
+							</button>
+						<button type="button" class="btn btn-outline-secondary offset-sm-3 col-12 col-sm-3 mt-3" @click="close()">Close</button>
 					</div>
 				</form>
 			</div>
@@ -94,35 +64,16 @@
 
 <script>
 	import {mapActions, mapGetters} from 'vuex'
-	import {Slider} from 'vue-color'
-	import {MD5} from '../../utils/md5.js'
+	import firebase from 'firebase'
 	export default {
 		data() {
 			return {
-				advSettings: false,
-				oAccount: {},
-				usernameValid: true,
-				checkingUsername: false,
-				oUsername: "",
-				linkColor: "",
-				linkTextColor: "",
-				bannerColor: "",
-				bannerTextColor: "",
+				predelete: true,
+				deleteWait: true
 			}
 		},
 		created(){
 			var tthis = this
-			setTimeout(() => {
-				tthis.oUsername = this.account.Username 
-				tthis.linkColor = {hex: this.account.Link}
-				tthis.linkTextColor = {hex: this.account.LinkText}
-				tthis.bannerColor = {hex: this.account.Banner}
-				tthis.bannerTextColor = {hex: this.account.BannerText}
-				tthis.checkUsername()
-			}, 1100)
-		},
-		components: {    
-    		'slider-picker': Slider,
 		},
 		computed:{
 			...mapGetters([
@@ -142,7 +93,7 @@
 		methods: {
 			...mapActions([
 				'updateAccount',
-				//'deleteAccount',,
+				'deleteAccount',,
 				'usernameCheck',
 				'commitAccount',
 				'loading1',
@@ -150,74 +101,47 @@
 
 			]),
 			open(){
-				for (var i in this.account) { this.oAccount[i] = this.account[i] } 
 				$("#modalAccountWindow").modal({backdrop:false, show: true})
-			},
-			advOpen(){
-				this.advSettings = true
 			},
 			close(){
 				var tthis = this
-				this.commitAccount(this.oAccount).then(()=>{
-					tthis.oAccount = {}
-					tthis.advSettings = false
-					tthis.$forceUpdate()
-				})
 				$("#modalAccountWindow").modal("hide")
 			},
-			save(){
-				if(!this.usernameValid){
-					return
+			doLinking(provId){
+				var provider = null
+				switch(provId){
+					case 1:
+						provider = new firebase.auth.GoogleAuthProvider()
+						break;
+					case 2:
+						provider = new firebase.auth.FacebookAuthProvider()
+						break;
+					case 3:
+						provider = new firebase.auth.TwitterAuthProvider()
+						break;
+					case 4: //linkedin
+						flow = 1
+						break;
 				}
-				var tthis = this
-				var nll = x => { x ? x : "" }
-				this.loading1()
-				var updatedFieldSets = [
-					["Avatar", nll(this.account.Avatar)],
-					["Bio", nll(this.account.Bio)],
-					["Title", nll(this.account.Title)],
-					["Username", this.account.Username.toLowerCase()],
-					["Banner", this.bannerColor.hex],
-					["BannerText", this.bannerTextColor.hex],
-					["Link", this.linkColor.hex],
-					["LinkText", this.linkTextColor.hex],
-				]
-				this.updateAccount(updatedFieldSets)
-					.then(()=>{
-							$("#modalAccountWindow").modal("hide")
-							tthis.advSettings = false
-							tthis.loading0()
-						})
+				firebase.auth().currentUser.linkWithRedirect(provider).then(() =>{
+					tthis.loading0()
+				})
 			},
-			setGravitar(){
-				var emailMd5 = MD5(this.account.Email)
-				this.account.Avatar = "https://www.gravatar.com/avatar/" + emailMd5 + ".png?s=160"
-			},
-			checkUsername(){
-				this.checkingUsername = true
-				this.usernameValid = false
-				
-				if(this.account.Username.toLowerCase() === this.oUsername.toLowerCase()){ 
-					this.usernameValid = true; 
-					this.checkingUsername = false
-					return; 
-				}
-				
-				var tthis = this
-				this.usernameCheck(this.account.Username)
-					.then(res =>{
-						tthis.usernameValid = res
-						tthis.checkingUsername = false
-					})
+			predeleteClick(){
+				setTimeout(() =>{
+					this.predelete = false
+					setTimeout(() =>{
+						this.deleteWait = false
+					}, 5000)
+					setTimeout(() =>{
+						this.predelete = true
+					}, 9000)
+				}, 200)
 			},
 			remove(){
 				var tthis = this
-				//this.loading1()
-				// this.deleteAccount()
-				// 	.then(()=>{
-				// 		tthis.loading0()
-				// 		window.location.replace('/')
-				// 	})
+				tthis.loading1()
+				this.deleteAccount()
 			},
 		}
 	}

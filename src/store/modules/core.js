@@ -196,6 +196,15 @@ const actions = {
 		})
 		.catch(e => { console.log(e) })
 	},
+	deleteAccount: (context) => {
+		return new Promise((resolve, reject) => {
+			context.rootState.accountsRef.doc(doc).delete().then(() => {
+				firebase.auth().currentUser.delete().then(() =>{
+					resolve()
+				})
+			})
+		})
+	},
 	updateAccount: (context, fieldSets) => {
 		context.dispatch("updateFields", 
 		//TEST REMOVE//

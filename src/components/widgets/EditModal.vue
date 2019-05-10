@@ -135,7 +135,7 @@
 			save(){
 				var tthis = this
 				this.loading1()
-				var nll = x => { x ? x : "" }
+				var nll = x => { x && x != undefined ? x : "" }
 				var fieldSets = [
 					["Type", this.section.Type],
 					["Title", nll(this.section.Title)],
