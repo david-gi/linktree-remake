@@ -56,7 +56,7 @@ const actions = {
 			})
 	},
 
-	autoLogin: (context, uid) => {
+	autoLogin: (context) => {
 		return new Promise((resolve, reject) => {
 			var loginFun = (acc) => {
 				if(acc){
@@ -82,12 +82,11 @@ const actions = {
 								email = email == "" ? accData["Email"] : email
 								var accData = p.data()
 								accData["id"] = acc.uid
-								accData["Email"] = email,
+								accData["Email"] = email
 								context.commit('setAccount', accData)
 								context.commit('setAuth', true)
 								resolve(true)
 							} else{
-								console.log('new... '+JSON.stringify(acc))
 								var newAccount = {
 									Avatar: grabNested("photoURL", ""),
 									Bio: "All in one place...",
@@ -109,7 +108,7 @@ const actions = {
 									resolve(true)
 								})
 							}
-						}).catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e) })		
+						}).catch(e => { console.log("Auth Failed: " + e); context.commit('setError',"Auth Failed: " + e); resolve(false); })		
 				} else{
 					resolve(false)
 				}
@@ -129,19 +128,64 @@ const actions = {
 			
 		})
 	},
-	linkedInLogin: (context) => {
-		//LinkedIn auth
-		var rUrl = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=867hna9fj37114"
-			+"&redirect_uri=https%3A%2F%2Flinkkle.appspot.com&scope=r_liteprofile%20r_emailaddress%20w_member_social"
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == XMLHttpRequest.DONE) {
-				alert(xhr.responseXML)//.code);
-				// awM85b1c0smgDIjH
+	emailSignUp: (context, {e, p}) => {
+		return new Promise((resolve, reject) => {
+			firebase.auth().createUserWithEmailAndPassword(e, p)
+				.then(r=>{ 
+					resolve(r)
+				})
+				.catch(e => { 
+					console.log(e)
+					context.commit('setError',"" + e)
+					reject(null)
+				})
+		})
+	},
+	emailLogin: (context, {e, p}) => {
+		return new Promise((resolve, reject) => {
+			firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+				.then(function() {
+					firebase.auth().signInWithEmailAndPassword(e, p)
+						.then(function(res) {
+							resolve(res)
+						})
+				})
+				.catch(e => { 
+					console.log(e)
+					context.commit('setError',"" + e)
+					reject(null)
+				})
+		})
+	},
+	linkedInLogin: (context, code) => {
+		var tthis = this
+		return new Promise((resolve, reject) => {
+			try{
+				//get access token
+				var rUrl = "https://www.linkedin.com/oauth/v2/accessToken"
+				var q = "grant_type=authorization_code&code=" + code + "&redirect_uri="
+						+ "https://linkkle.appspot.com/src/in.htm".replace('/','%2F')
+						+ "&client_id=" + context.rootState.inId
+						+ "&client_secret=" + context.rootState.inS
+				var xhr = new XMLHttpRequest()
+				xhr.open("POST", rUrl, true)
+				xhr.onreadystatechange = function() {
+					console.log("**"+JSON.stringify(xhr))
+					if (this.readyState == 4) {
+						//var accessToken = xhr.response.access_token
+						//firebase.auth().signInWithCustomToken(accessToken)
+						//existing //new
+						
+						resolve(true)
+					}
+				}
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+				xhr.responseType = 'json'
+				xhr.send(q)
+			} catch(e){
+				reject("Unable to authenticate, please try agian.")
 			}
-		}
-		xhr.open("GET", rUrl, true);
-		xhr.send(null);
+		})
 	},
 	logout: (context) => {
 		firebase.auth().signOut().then(() => {

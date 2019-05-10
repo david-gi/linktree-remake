@@ -55,7 +55,7 @@ export default {
 				'publicSections'
 			]),
 			avatarStyle(){
-				var avatarUrl = this.publicAccount.Avatar || this.publicAccount.Avatar == ""
+				var avatarUrl = this.publicAccount.Avatar || this.publicAccount.Avatar != ""
 								? this.publicAccount.Avatar : "./src/assets/profile.jpg"
 				return { backgroundImage: 'url(\''+ avatarUrl +'\')' }
 			},

@@ -25,7 +25,8 @@ var store = new Vuex.Store({
 		auth: false,
 		msg: null,
 		error: null,
-		loading: false
+		loading: false,
+		inId: "867hna9fj37114"
 	},
 	mutations: {
 		setAuth (state, x) {
@@ -46,6 +47,9 @@ var store = new Vuex.Store({
 		setLoading (state, x) {
 		  state.loading = x
 		},
+		setUnique (state, x) {
+		  state.unique = x
+		},
 	},
 	actions: {
 		setAuth ({commit}, x){
@@ -64,10 +68,22 @@ var store = new Vuex.Store({
 		loading0 ({commit}){
 			commit("setLoading", false)
 		},
+		genUnique ({commit}){
+			var letters = '0123456789ABCDEFGHIJK';
+			var gen = ""
+			for (var i = 0; i < 8; i++) {
+				gen += letters[Math.floor(Math.random() * 21)];
+			}
+			commit("setUnique", gen)
+			return gen
+		}
 	},
 	getters:{
 		auth: state => {
 			return state.auth
+		},
+		inId: state => {
+			return state.inId
 		},
 	},
 	modules: {

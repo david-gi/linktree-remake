@@ -1,5 +1,15 @@
 <template>
     <div class="container-fluid">
+        <div class="col-12 mt-2 text-center">
+                <a class="col-3" src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
+                <ul class="col-7 offset-2 listMenu d-inline align-bottom">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="https://linkkle.com/pricing">Pricing</a></li> 
+                    <li><a href=/register>Sign Up</a></li>
+                    <li><a class='log' href=/login>Login</a></li>                        
+                </ul>
+        </div>
+
     	<div class="row">
             <transition name="slide" mode="out-in" class="position-absolute">
                 <router-view class=""></router-view>
@@ -19,7 +29,16 @@
             <div class="col-12x text-center text-white fixed-bottom error bg-danger">{{error}}</div>
         </div>
 
-		<div id="Footer" class="text-center"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/></div>
+		<div id="Footer" class="text-center  mb-1 col-12">
+            <div style="min-width:330px;">
+                <a src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
+                <ul class="listMenu">
+                    <li><a href="https://linkkle.com/privacy">Privacy</a></li>
+                    <li><a href="https://twitter.com/mylinkkle">Twitter</a></li>
+                    <li><a href="mailto:support@linkkle.com">Support</a></li>
+                </ul>
+            </div>
+        </div>
     
         <div v-show="loading" class="loading">
             <div class="waiting-dots"></div>  
@@ -77,6 +96,16 @@ export default {
         text-shadow: #fff 0 0 5px;
         padding:0px 0px 4px 9px;
     }
+    .listMenu li{
+        display: inline-block;
+        list-style-type: none;
+        margin-right: 42px;
+    }
+    #Footer{
+        bottom:0;
+        position: static;
+    }
+
     .slide-enter-active{
         animation: slide-in 200ms ease-out forwards;
     }
@@ -135,6 +164,7 @@ export default {
         height: 100%;
         margin-left:-30px;
         position: fixed;
+        z-index: 9999999;
     }
     /*Typing Loader*/
     .waiting-dots{

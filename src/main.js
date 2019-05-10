@@ -11,7 +11,7 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(Sortable)
 
-const router = new VueRouter({ routes })
+const router = new VueRouter({ routes: routes })
 
 Vue.config.errorHandler = function (err, vm, info) {
 	console.log("Global Handler: "+err + " | " + info)

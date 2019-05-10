@@ -170,12 +170,12 @@
 					return
 				}
 				var tthis = this
+				var nll = x => { x ? x : "" }
 				this.loading1()
 				var updatedFieldSets = [
-					["Avatar", this.account.Avatar],
-					["Bio", this.account.Bio],
-					["Email", this.account.Email],
-					["Title", this.account.Title],
+					["Avatar", nll(this.account.Avatar)],
+					["Bio", nll(this.account.Bio)],
+					["Title", nll(this.account.Title)],
 					["Username", this.account.Username.toLowerCase()],
 					["Banner", this.bannerColor.hex],
 					["BannerText", this.bannerTextColor.hex],

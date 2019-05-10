@@ -135,10 +135,11 @@
 			save(){
 				var tthis = this
 				this.loading1()
+				var nll = x => { x ? x : "" }
 				var fieldSets = [
 					["Type", this.section.Type],
-					["Title", this.section.Title ? this.section.Title : "."],
-					["Value", this.section.Value],
+					["Title", nll(this.section.Title)],
+					["Value", nll(this.section.Value)],
 					["Height", this.section.Height],
 					["Width", this.section.Width],
 				]

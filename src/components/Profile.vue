@@ -1,5 +1,5 @@
 <template>
-	<div id="Container" class="col-12" v-if="dataLoaded">
+	<div id="Container" class="col-12 clearfix" v-if="dataLoaded">
 		<div id="Header" class="">
 			<div id="Avatar" class="col-12">
 				<button class="btn btn-sm btn-outline-primary float-left" @click="preview()">View Live</button>
@@ -37,7 +37,7 @@
 			</div>
 		</div>
 
-		<div class="">
+		<div class="clearfix">
 			<div class="addBtn text-center p-0 pb-1" @click="newSection()">+</div>
 		</div>
 
@@ -67,17 +67,17 @@ export default {
 		created(){
 			var tthis = this
 			this.loading1()
-				this.autoLogin().then(res =>{
-					if(!res){
+			this.autoLogin().then(res =>{
+				if(!res && !this.auth){
+					this.loading0()
+					window.location.replace('#/login')
+				} else {
+					tthis.getSections().then(() => {
 						this.loading0()
-						window.location.replace('#/login')
-					} else {
-						tthis.getSections().then(()=>{
-							this.loading0()
-							tthis.dataLoaded = true
-						})
-					}
-				})
+						tthis.dataLoaded = true
+					})
+				}
+			})
 		},
 		mounted(){
 		},
@@ -88,7 +88,7 @@ export default {
 				'sections'
 			]),
 			avatarStyle(){
-				var avatarUrl = this.account.Avatar || this.publicAccount.Avatar == ""
+				var avatarUrl = this.account.Avatar || this.account.Avatar != ""
 								? this.account.Avatar : "./src/assets/profile.jpg"
 				return { backgroundImage: 'url(\''+ avatarUrl +'\')' }
 			},

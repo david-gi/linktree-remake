@@ -1,35 +1,81 @@
 <template>
-	<div class="modal fade" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="modal fade mb-2" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true">
 		<div class="modal-dialog modal-lg rounded mt-5 pt-3"  role="document">
-			<div class="modal-content bg-primary text-white rounded" 
-				style="min-width:280px;">
+			<div class="modal-content bg-primary text-white rounded pb-1" style="min-width:280px;">
 				<div class="border-bottom text-center bg-primary p-3">
 					<h4 class="modal-title">
-						Login 
+						<span v-show="showLogin">Login to Linkkle</span>
+						<span v-show="!showLogin">Sign Up with Linkkle</span>
 					</h4>
 				</div>
-				<div class="modal-body bg-primary row no-gutters justify-content-center">
-						<span class="text-center col-12 pb-3">Sign in with:</span> 
-						<div class="float-left col-1 mr-2">
-							<div id="gBtn" class="rounded border border-white" @click="doLogin(1)"></div>	
-						</div>	
-						<div class="float-left col-1 ml-2 mr-2">
-							<div id="fbBtn" class="rounded border border-white" @click="doLogin(2)"></div>	
-						</div>	
-						<div class="float-left col-1 ml-2 mr-2">
-							<div id="twBtn" class="rounded border border-white" @click="doLogin(3)"></div>	
+				<div v-show="showLogin" class="modal-body bg-primary row no-gutters justify-content-center pb-0 m-auto" style="max-width:500px;">
+					<div class="col-12 mt-2 form-group">
+						<div class="col-12 p-3 pt-4 pb-3 rounded d-inline-block emailBlock clearfix">
+							
+							<div class="col-12 mt-2 float-left">
+								<input v-model="emailAddr" type="email" class="form-control form-control-sm"  placeholder="Email..."/>
+							</div>
+							<div class="col-12 mt-2 float-left">
+								<input v-model="pass" type="password" class="form-control form-control-sm"  placeholder="Password..."/>
+							</div>
+							<div class="col-12 text-right mt-2 float-left">
+								<button @click="doLogin(5)" class="w-100 btn btn-sm border border-primary btn-success font-weight-bold">Login</button>
+							</div>
+
+							<div class="w-75 m-auto">
+								<span class="pt-1 pr-1 float-left mr-4 mt-3">Or login with:</span>
+								<div class="d-inline-block">
+									<div class="float-left mr-3 mt-3">
+										<div id="gBtn" class="smBtn rounded border border-white" @click="doLogin(1)"></div>	
+									</div>	
+									<div class="float-left ml-3 mr-3 mt-3">
+										<div id="fbBtn" class="smBtn rounded border border-white" @click="doLogin(2)"></div>	
+									</div>	
+									<div class="float-left  ml-3 mr-3x mt-3">
+										<div id="twBtn" class="smBtn rounded border border-white" @click="doLogin(3)"></div>	
+									</div>
+									<!--div class="float-left col-1 ml-3">
+										<div id="inBtn" class="smBtn rounded border border-white" @click="doLogin(4)"></div>	
+									</div-->	
+								</div>
+							</div>
+
 						</div>
-						<div class="float-left col-1 ml-2">
-							<div id="inBtn" class="rounded border border-white" @click="doLogin(4)"></div>	
-						</div>	
+					</div>	
 				</div>
-				<div class="bg-primary text-center mt-3">
+
+				<div v-show="showLogin" class="bg-primary text-center mb-3">
 					<span class="text-light">
 						<i>Don't have an account?</i> 
-						<br><strong>Sign up now below:</strong>
+						<br><button @click="toggleLogin()" class="mt-2 btn btn-warning font-weight-bold">Sign up now!</button>
 					</span>
 				</div>
-				<div class="modal-body bg-primary rounded">
+
+				<div v-show="!showLogin" class="modal-body bg-primary rounded m-auto" style="max-width:500px;">
+					<div class="col-12 mb-3 mt-1 form-group">
+						<div class="col-12 p-2 pb-3 rounded d-inline-block emailBlock">
+							<form>
+							<label class="pl-3">Email Sign Up</label>
+							<div class="col-12 mt-2 float-left">
+								<input id="emailAddrInp" v-model="emailAddrReg" type="email" class="form-control form-control-sm" placeholder="Email..."/>
+							</div>
+							<div class="col-12 mt-2 float-left">
+								<input v-model="passReg" type="password" class="form-control form-control-sm"
+									minlength="6" maxlength="28" placeholder="Password..."/>
+							</div>
+							<div class="col-12 mt-2 float-left">
+								<input v-model="passReg2" type="password" class="form-control form-control-sm"  
+									:class="{'border-danger': passReg != passReg2}" placeholder="Confirm password..."/>
+							</div>
+							<div class="col-12 text-right mt-2 float-left">
+								<small v-show="passReg.length < 7 && passReg.length > 0 && passReg2.length > 0" 
+										class="bg-danger rounded mb-2 p-1 pl-2 pr-2 float-left">Password must be at least 6 characters long</small>
+								<small v-show="passReg != passReg2 && passReg2.length > 0" class="bg-danger rounded mb-2 p-1 pl-2 pr-2 float-left">Passwords must match</small>
+								<button @click="emailReg" :disabled="(passReg != passReg2)" class="btn btn-sm col-12 border border-primary btn-success font-weight-bold">Sign Up</button>
+							</div>
+							</form>
+						</div>
+					</div>	
 					<div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(1)">
 							Sign Up using <strong class="d-inline-block">Google</strong>
@@ -45,12 +91,21 @@
 							Sign Up using <strong class="d-inline-block">Twitter</strong>
 						</button>	
 					</div>	
-					<div class="col-12 mb-3">
+					<!--div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(4)">
 							Sign Up using <strong class="d-inline-block">LinkedIn</strong>
 						</button>	
-					</div>	
+					</div-->	
 				</div>
+				
+
+				<div v-show="!showLogin" class="bg-primary text-center mb-3">
+					<span class="text-light">
+						<i>Already have an account?</i> 
+						<br><button @click="toggleLogin()" class="mt-2 btn border btn-primary">Go to login</button>
+					</span>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -62,44 +117,73 @@ import firebase from 'firebase'
 export default {
 		data() {
 			return {
+				showLogin: true,
+				emailAddr: "",
+				pass: "",
+				emailAddrReg: "",
+				passReg: "",
+				passReg2: "",
 			}
+		},
+		props: {
+			//linkin// code: { type: String, required: false },
 		},
 		created(){
 		},
 		mounted(){
 			this.loading1()
 			var tthis = this
-			if(this.isLoggedIn){
-				this.loading0()
-				window.location.replace("#/edit")
-			} else {
-				this.autoLogin().then(res => {
+			function afterLogin(res){
 					tthis.loading0()
-					if(res){
+					if(res || tthis.isLoggedIn){
 						window.location.replace("#/edit")
 					} else{
 						$("#modalLoginWindow").modal({backdrop:false, show: true})
 					}
-				})
+			}
+			var tthis = this
+			if(this.isLoggedIn){
+				this.loading0()
+				window.location.replace("#/edit")
+			} else {
+				if(false){ //this.code){
+					this.linkedInLogin(this.code)
+						.then((res)=>{ afterLogin(res) })
+				} else {
+					this.autoLogin().then((res)=>{ afterLogin(res) })
+				}
 			}
 		},
 		computed: {
 			...mapGetters([
 				'auth',
+				'inId'
 			]),
 			isLoggedIn(){
 				return this.auth
+			},
+			emailValid(){
+				var inp = document.getElementById('emailAddrInp')
+				return inp ? inp.checkValidity() : false
 			}
 		},
 		methods: {
 			...mapActions([
+				'logout',
 				'autoLogin',
+				'emailSignUp',
+				'emailLogin',
 				'linkedInLogin',
 				'loading0',
 				'loading1'
 			]),
+			toggleLogin(){
+				this.showLogin = !this.showLogin
+			},
 			doLogin(provId) {
-				var isLinkedIn = false
+				var tthis = this
+				this.loading1()
+				var flow = 0
 				var provider = null
 				switch(provId){
 					case 1:
@@ -111,24 +195,62 @@ export default {
 					case 3:
 						provider = new firebase.auth.TwitterAuthProvider()
 						break;
-					case 4:
-						isLinkedIn = true
+					case 4: //linkedin
+						flow = 1
+						break;
+					case 5: //email
+						flow = 2
 						break;
 				}
-				if(!isLinkedIn){
-					firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-						.then(function() {
-							firebase.auth().signInWithRedirect(provider)
+				switch(flow){
+					case 0:
+						firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+							.then(function() {
+								tthis.loading0()
+								firebase.auth().signInWithRedirect(provider)
+							})
+						break;
+					case 1:
+						// var rUrl = "https://www.linkedin.com/oauth/v2/authorization?response_type=code"
+						// 	+"&client_id=" + this.inId
+						// 	+"&redirect_uri=" + "https://linkkle.appspot.com/src/in.htm".replace('/', '%2F')
+						// 	+"&scope=r_liteprofile%20r_emailaddress"
+						// window.open(rUrl, "_self")
+						break;
+					case 2:
+						if(this.emailAddr.length < 6 && this.pass.length < 6) {
+							this.loading0()
+							break;
+						}
+						this.emailLogin({e: this.emailAddr, p: this.pass}).then(r=>{ 
+							setTimeout(function(){
+								tthis.loading0()
+								window.location.replace("#/edit")
+							}, 1000)
 						})
-				} else {
-					this.linkedInLogin()
+						break;
 				}
 			},
+			emailReg() {
+				var tthis = this
+				if(this.emailValid && this.passReg){
+					this.emailSignUp({e: this.emailAddrReg, p: this.passReg}).then(r=>{
+						setTimeout(function(){
+							tthis.loading0()
+							window.location.replace("#/edit")
+						}, 1000)
+					})
+				} 
+			}
 		}
 	}
 </script>
 
 <style>
+	.emailBlock{
+		background-color: rgba(255, 255, 255, 0.1);
+		border: 1px rgba(255, 255, 255, 0.2) solid;
+	}
 	#gBtn{
 		cursor: pointer;
 		background-image:url("/src/assets/g.png");
@@ -138,37 +260,27 @@ export default {
 		width:32px;
 		height:32px;
 	}
-	#fbBtn{
+	.smBtn{
 		cursor: pointer;
-		background-image:url("/src/assets/fb.png");
 		background-repeat: no-repeat;
 		background-position: left center;
 		background-size: cover;
 		width:32px;
 		height:32px;
+	}
+	#fbBtn{
+		background-image:url("/src/assets/fb.png");
 	}
 	#twBtn{
-		cursor: pointer;
 		background-image:url("/src/assets/tw.png");
-		background-repeat: no-repeat;
-		background-position: left center;
-		background-size: cover;
-		width:32px;
-		height:32px;
 	}
 	#inBtn{
-		cursor: pointer;
 		background-image:url("/src/assets/in.png");
-		background-repeat: no-repeat;
-		background-position: left center;
-		background-size: cover;
-		width:32px;
-		height:32px;
 	}
-	#gBtn:hover, #inBtn:hover, #twBtn:hover, #fbBtn:hover{
+	.smBtn:hover{
 		opacity: .7;
 	}
-	#gBtn:active, #inBtn:active, #twBtn:active, #fbBtn:active{
+	.smBtn:active{
 		opacity: .7;
 		border-color: blueviolet !important;
 	}
