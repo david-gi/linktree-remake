@@ -1,16 +1,16 @@
 <template>
     <div class="container-fluid">
         <div class="col-12 mt-2 text-center"  v-show="!isAuth">
-                <a class="col-3" src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
-                <ul class="col-7 offset-2 listMenu d-inline align-bottom">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="https://linkkle.com/pricing">Pricing</a></li> 
-                    <li><a href=/register>Sign Up</a></li>
-                    <li><a class='log' href=/login>Login</a></li>                        
-                </ul>
+            <a class="col-3" src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
+            <ul class="col-7 offset-2 listMenu d-inline align-bottom">
+                <li><a href="/">Home</a></li>
+                <li><a href="https://linkkle.com/pricing">Pricing</a></li> 
+                <li><a href=/register>Sign Up</a></li>
+                <li><a class='log' href=/login>Login</a></li>                        
+            </ul>
         </div>
 
-    	<div class="row" style="min-height:200px;">
+    	<div class="row pl-4 pr-4" style="min-height:200px;">
             <transition name="slide" mode="out-in" class="position-absolute">
                 <router-view class=""></router-view>
             </transition>
@@ -20,13 +20,13 @@
     	</div>
 
         <div v-show="msg" class="row no-gutters text-center">
-            <div class="fixed-bottom font-weight-bold rounded-top w-75 m-auto text-white p-2 bg-primary">
+            <div class="fixed-top font-weight-bold rounded-top w-75 m-auto text-white p-2 bg-primary">
                 {{msg}}... 
             </div>
         </div>
 
         <div v-show="error" class="row no-gutters">
-            <div class="col-12x text-center text-white fixed-bottom error bg-danger">{{error}}</div>
+            <div class="col-12x text-center text-white fixed-top error bg-danger">{{error}}</div>
         </div>
 
 		<div id="Footer" class="text-center mb-1 col-12">

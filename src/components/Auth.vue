@@ -276,8 +276,8 @@ export default {
 						.then(function() {
 							tthis.loading0()
 							tthis.emailRegd = true
-						})
-					})
+						}).catch(e =>{tthis.loading0()})
+					}).catch(e =>{tthis.loading0()})
 				} 
 			}
 		}
