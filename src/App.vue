@@ -39,7 +39,8 @@
                 </ul>
             </div>
         </div>
-    
+        <div class="adBanner ad_container adholder2 ad_box_"></div>
+
         <div v-show="loading" class="loading">
             <div class="waiting-dots"></div>  
         </div>
@@ -54,6 +55,12 @@ export default {
         }
     },
     mounted(){
+        var tthis = this
+        setTimeout(function(){
+            if(!$("adBanner, .ad_container, .adholder2, .ad_box_").is(":visible") || !adBlockerEnabled){
+                    tthis.errorMsg("Please disable your adblocker or whitelist linkkle.com to continue.")
+            }
+        }, 1000)
     },
     components: {
     },
@@ -153,7 +160,13 @@ export default {
 	.inputLine::placeholder {
 		opacity: 1;
     }
-    
+
+    .adBanner {
+        height: 1px;
+        width: 1px;
+        background-color: transparent;
+    }
+
     .loading{
         top:0;
         padding-top:20%;

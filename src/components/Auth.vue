@@ -1,5 +1,5 @@
 <template>
-	<div class="modal fade mb-2" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="modal fade mb-2" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true">		
 		<div class="modal-dialog modal-lg rounded mt-5 pt-3"  role="document">
 			<div class="modal-content bg-primary text-white rounded pb-1" style="min-width:280px;">
 				<div class="border-bottom text-center bg-primary p-3">
@@ -152,7 +152,7 @@ export default {
 			//linkin// code: { type: String, required: false },
 		},
 		created(){
-			tthis.loading0()
+			this.loading0()
 		},
 		mounted(){
 			this.loading1()

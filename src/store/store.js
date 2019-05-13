@@ -42,7 +42,7 @@ var store = new Vuex.Store({
 		  state.error = x
 		  setTimeout(() => {
 			state.error = null
-		  }, 8000);
+		  }, 10000);
 		},
 		setLoading (state, x) {
 		  state.loading = x
