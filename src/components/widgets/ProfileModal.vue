@@ -183,10 +183,10 @@
 				]
 				this.updateAccount(updatedFieldSets)
 					.then(()=>{
+							tthis.$forceUpdate()
 							$("#modalProfileWindow").modal("hide")
 							tthis.advSettings = false
 							tthis.loading0()
-							this.$forceUpdate()
 						})
 			},
 			setGravitar(){

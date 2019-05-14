@@ -48,6 +48,9 @@ export default {
 			})
 		},
 		mounted(){
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.open("post", "https://us-central1-linkkle.cloudfunctions.net/view?x="+id, true);  
+			xmlHttp.send(null);
 		},
 		computed: {
 			...mapGetters([
@@ -69,6 +72,13 @@ export default {
 					return { backgroundImage: 'url(\''+ banner +'\')', color: text }
 				}
 			},
+			sClick(i, x){
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.open("post", "https://us-central1-linkkle.cloudfunctions.net/click?x="+x, true);  
+				xmlHttp.send(null);
+
+				window.open(this.sections[i], "_blank")
+			}
 		},
 		methods: {
 			...mapActions([

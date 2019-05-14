@@ -20,7 +20,7 @@
     	</div>
 
         <div v-show="msg" class="row no-gutters text-center">
-            <div class="fixed-top font-weight-bold rounded-top w-75 m-auto text-white p-2 bg-primary">
+            <div class="fixed-top font-weight-bold rounded-top w-75 m-auto text-white p-2 pl-3 pr-3 bg-primary">
                 {{msg}}... 
             </div>
         </div>
@@ -99,7 +99,7 @@ export default {
 	}
 
     .error{
-        padding:9px;
+        padding:9px 14px;
     }
     .listMenu li{
         display: inline-block;

@@ -8,7 +8,7 @@
 				</div>
 				<button @click="preview()" style="margin-top:-73px;"
 					class="float-left btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 ml-n2 ">
-					<small>Preview</small>
+					<small>View</small>
 				</button>
 				<button @click="openProfileEdit()" style="margin-top:-73px;"
 					class="float-right btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 mr-n2 ">

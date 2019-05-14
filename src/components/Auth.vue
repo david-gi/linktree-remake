@@ -67,24 +67,24 @@
 					<div class="col-12 mb-3 mt-1 form-group">
 						<div class="col-12 p-2 pb-3 rounded d-inline-block emailBlock">
 							<form>
-							<label class="pl-3">Email Sign Up</label>
-							<div class="col-12 mt-2 float-left">
-								<input id="emailAddrInp" v-model="emailAddrReg" type="email" class="form-control form-control-sm" placeholder="Email..."/>
-							</div>
-							<div class="col-12 mt-2 float-left">
-								<input v-model="passReg" type="password" class="form-control form-control-sm"
-									minlength="6" maxlength="28" placeholder="Password..."/>
-							</div>
-							<div class="col-12 mt-2 float-left">
-								<input v-model="passReg2" type="password" class="form-control form-control-sm"  
-									:class="{'border-danger': passReg != passReg2}" placeholder="Confirm password..."/>
-							</div>
-							<div class="col-12 text-right mt-2 float-left">
-								<small v-show="passReg.length < 7 && passReg.length > 0 && passReg2.length > 0" 
-										class="bg-danger rounded mb-2 p-1 pl-2 pr-2 float-left">Password must be at least 6 characters long</small>
-								<small v-show="passReg != passReg2 && passReg2.length > 0" class="bg-danger rounded mb-2 p-1 pl-2 pr-2 float-left">Passwords must match</small>
-								<button @click="emailReg" :disabled="(passReg != passReg2)" class="btn btn-sm col-12 border border-primary btn-success font-weight-bold">Sign Up</button>
-							</div>
+								<label class="pl-3">Email Sign Up</label>
+								<div class="col-12 mt-2 float-left">
+									<input id="emailAddrInp" v-model="emailAddrReg" type="email" class="form-control form-control-sm" placeholder="Email..."/>
+								</div>
+								<div class="col-12 mt-2 float-left">
+									<input v-model="passReg" type="password" class="form-control form-control-sm"
+										minlength="6" maxlength="28" placeholder="Password..."/>
+								</div>
+								<div class="col-12 mt-2 float-left">
+									<input v-model="passReg2" type="password" class="form-control form-control-sm"  
+										:class="{'border-danger': passReg != passReg2}" placeholder="Confirm password..."/>
+								</div>
+								<div class="col-12 text-right mt-2 float-left">
+									<small v-show="passReg.length < 7 && passReg.length > 0 && passReg2.length > 0" 
+											class="bg-danger rounded mb-2 p-1 pl-2 pr-2 float-left">Password must be at least 6 characters long</small>
+									<small v-show="passReg != passReg2 && passReg2.length > 0" class="bg-danger rounded mb-2 p-1 pl-2 pr-2 float-left">Passwords must match</small>
+									<button type="button" @click="emailReg" :disabled="(passReg != passReg2)" class="btn btn-sm col-12 border border-primary btn-success font-weight-bold">Sign Up</button>
+								</div>
 							</form>
 						</div>
 					</div>	

@@ -116,7 +116,7 @@ const actions = {
 									Location: "",
 									Plan: 1,
 									Title:  grabNested("displayName", "My Links"),
-									Username:  grabNested("email", "").replace('@','-').replace('.','-'),
+									Username:  grabNested("email", "").replace('@','-').replace('.','-').toLowerCase(),
 									Banner:"#354378",
 									BannerText: "#519DE8",
 									Link: "#354378",
