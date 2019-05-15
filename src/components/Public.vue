@@ -48,9 +48,14 @@ export default {
 			})
 		},
 		mounted(){
+			$("#Menu").hide()
+			try{
 			var xmlHttp = new XMLHttpRequest();
-			xmlHttp.open("post", "https://us-central1-linkkle.cloudfunctions.net/view?x="+id, true);  
+			xmlHttp.open("post", "https://us-central1-linkkle.cloudfunctions.net/view?x="+this.id, true);  
 			xmlHttp.send(null);
+			} catch(e){
+				console.log(e)
+			}
 		},
 		computed: {
 			...mapGetters([
@@ -72,13 +77,6 @@ export default {
 					return { backgroundImage: 'url(\''+ banner +'\')', color: text }
 				}
 			},
-			sClick(i, x){
-				var xmlHttp = new XMLHttpRequest();
-				xmlHttp.open("post", "https://us-central1-linkkle.cloudfunctions.net/click?x="+x, true);  
-				xmlHttp.send(null);
-
-				window.open(this.sections[i], "_blank")
-			}
 		},
 		methods: {
 			...mapActions([
@@ -103,7 +101,13 @@ export default {
 
 				return style
 			},
+			sClick(x){
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.open("post", "https://us-central1-linkkle.cloudfunctions.net/click?x="+x, true);  
+				xmlHttp.send(null);
+			},
 			linkClick(id, Type, Value){
+				this.sClick(id)
 				switch(Type+""){
 					case "0":
 						window.open(Value, '_blank')
@@ -122,7 +126,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #Container{
 	max-width: 600px;
 	margin:0 auto;

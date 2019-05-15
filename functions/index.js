@@ -28,7 +28,7 @@ exports.view = functions.https.onRequest((req, res) => {
         if(!r.empty){
             var s = r.docs[0].data()
             var newCount = s.Views ? s.Views + 1 : 1
-            ref.set({Views: newCount}, { merge: true })
+            admin.firestore().collection("accounts").doc(r.docs[0].id).set({Views: newCount}, { merge: true })
         }
         res.send("OK")
         return

@@ -21,7 +21,10 @@
 				<h2>
 					@{{account.Username}}
 					</h2>
-				<p class="">{{account.Bio}}</p>
+				<p class="mb-0">{{account.Bio}}<br>
+					<i><small>{{account.Views}} views</small></i>
+				</p>
+				
 			</div>
 		</div>
 
@@ -33,21 +36,27 @@
 					}">
 				<div v-show="!sect.edit" :style="sectionStyle(sect)">
 					<button @click="openEdit(index)" style="margin-top:-3px;"
-						class="float-right btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 ml-3 mr-n1">
+						class="float-right btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 ml-n4 mr-n1">
 						<small>Edit</small>
 					</button>
 					{{sect.Title}}
+					<i class="ml-2"><small>({{sect.Clicks}} clicks)</small></i>
 				</div>
 			</div>
 		</div>
 
 		<div class="clearfix">
-			<div class="rowBtn text-center p-0 pb-1 pl-2" @click="newSection()"><span class="align-top d-inline-block pt-1">+</span><small class="align-middle d-inline-block"><small>Add</small></small></div>
+			<div class="rowBtn text-center p-0 pb-1 pl-1" @click="newSection()">
+				<span class="align-top d-inline-block pt-1">+</span><small class="align-middle d-inline-block"><small>Add</small></small>
+			</div>
+
+			<i class="text-muted p-0 pb-1 pl-2">Drag & drop sections to re-order.</i>
 		</div>
 
 		<accountModal ref="accountModal"></accountModal>
 		<profileModal ref="profileModal"></profileModal>
 		<editModal ref="editModal"></editModal>
+
 	</div>
 </template>
 
@@ -84,6 +93,7 @@ export default {
 			}
 		},
 		mounted(){
+			$("#Menu").hide()
 		},
 		computed: {
 			...mapGetters([
@@ -236,8 +246,8 @@ export default {
 	#Banner h2{
 		font-size: 1.1em;
 	}
-#Sections {
-	outline: 0;
+#Sections{
+	outline: none;
 }
 	#Sections .section{
 		text-align: center;

@@ -1,5 +1,5 @@
 <template>
-	<div class="modal fade mb-2" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true">		
+	<div class="modal fade mb-2 mt-5" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true">		
 		<div class="modal-dialog modal-lg rounded mt-5 pt-3"  role="document">
 			<div class="modal-content bg-primary text-white rounded pb-1" style="min-width:280px;">
 				<div class="border-bottom text-center bg-primary p-3">
@@ -34,20 +34,20 @@
 								</div>
 							</div>
 
-							<div class="w-75 m-auto">
-								<span class="pt-1 pr-1 float-left mr-4 mt-3">Or login with:</span>
+							<div class="col-12">
+								<span class="pt-1 pr-1 float-left mr-4 mt-3"><small>Or login with linked account:</small></span>
 								<div class="d-inline-block">
 									<div class="float-left mr-3 mt-3">
-										<div id="gBtn" class="smBtn rounded border border-white" @click="doLogin(1)"></div>	
+										<a id="gBtn" class="smBtn rounded border border-white" @click="doLogin(1)"></a>	
 									</div>	
 									<div class="float-left ml-3 mr-3 mt-3">
-										<div id="fbBtn" class="smBtn rounded border border-white" @click="doLogin(2)"></div>	
+										<a id="fbBtn" class="smBtn rounded border border-white" @click="doLogin(2)"></a>	
 									</div>	
 									<div class="float-left  ml-3 mr-3x mt-3">
-										<div id="twBtn" class="smBtn rounded border border-white" @click="doLogin(3)"></div>	
+										<a id="twBtn" class="smBtn rounded border border-white" @click="doLogin(3)"></a>	
 									</div>
 									<!--div class="float-left col-1 ml-3">
-										<div id="inBtn" class="smBtn rounded border border-white" @click="doLogin(4)"></div>	
+										<a id="inBtn" class="smBtn rounded border border-white" @click="doLogin(4)"></a>	
 									</div-->	
 								</div>
 							</div>
@@ -88,7 +88,7 @@
 							</form>
 						</div>
 					</div>	
-					<div class="col-12 mb-3">
+					<!--div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(1)">
 							Sign Up using <strong class="d-inline-block">Google</strong>
 						</button>	
@@ -103,7 +103,7 @@
 							Sign Up using <strong class="d-inline-block">Twitter</strong>
 						</button>	
 					</div>	
-					<!--div class="col-12 mb-3">
+					<div class="col-12 mb-3">
 						<button class="btn btn-outline-light w-100" @click="doLogin(4)">
 							Sign Up using <strong class="d-inline-block">LinkedIn</strong>
 						</button>	
@@ -155,6 +155,7 @@ export default {
 			this.loading0()
 		},
 		mounted(){
+			$("#Menu").show()
 			this.loading1()
 			var tthis = this
 			function afterLogin(res){
@@ -289,15 +290,6 @@ export default {
 		background-color: rgba(255, 255, 255, 0.1);
 		border: 1px rgba(255, 255, 255, 0.2) solid;
 	}
-	#gBtn{
-		cursor: pointer;
-		background-image:url("/src/assets/g.png");
-		background-repeat: no-repeat;
-		background-position: center center;
-		background-size: cover;
-		width:32px;
-		height:32px;
-	}
 	.smBtn{
 		cursor: pointer;
 		background-repeat: no-repeat;
@@ -305,6 +297,10 @@ export default {
 		background-size: cover;
 		width:32px;
 		height:32px;
+		display: inline-block;
+	}
+	#gBtn{
+		background-image:url("/src/assets/g.png");
 	}
 	#fbBtn{
 		background-image:url("/src/assets/fb.png");

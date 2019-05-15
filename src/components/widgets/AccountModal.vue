@@ -37,16 +37,16 @@
 						</div>
 						<div class="form-group col-12 col-sm-8 float-left">
 								<div class="float-left mr-3 mt-3">
-									<div id="gBtn" class="smBtn rounded border border-white" @click="doLinking(1)"></div>	
+									<a id="gBtn" class="smBtn rounded border border-white" @click="doLinking(1)"></a>	
 								</div>	
 								<div class="float-left ml-3 mr-3 mt-3">
-									<div id="fbBtn" class="smBtn rounded border border-white" @click="doLinking(2)"></div>	
+									<a id="fbBtn" class="smBtn rounded border border-white" @click="doLinking(2)"></a>	
 								</div>	
 								<div class="float-left  ml-3 mr-3x mt-3">
-									<div id="twBtn" class="smBtn rounded border border-white" @click="doLinking(3)"></div>	
+									<a id="twBtn" class="smBtn rounded border border-white" @click="doLinking(3)"></a>	
 								</div>
 								<!--div class="float-left col-1 ml-3">
-									<div id="inBtn" class="smBtn rounded border border-white" @click="doLinking(4)"></div>	
+									<a id="inBtn" class="smBtn rounded border border-white" @click="doLinking(4)"></a>	
 								</div-->
 						</div>
 							

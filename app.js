@@ -7,8 +7,12 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/'));
 
-app.get('/', function(req, res) {
+app.get('/#/', function(req, res) {
     res.sendFile('/index.html', {root: __dirname})
+});
+
+app.get('/:id', function(req, res) {
+    res.redirect('/#/'+req.params.id)
 });
 
 app.listen(PORT);

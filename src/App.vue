@@ -1,14 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="col-12 mt-2 text-center"  v-show="!isAuth">
-            <a class="col-3" src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
-            <ul class="col-7 offset-2 listMenu d-inline align-bottom">
-                <li><a href="/">Home</a></li>
-                <li><a href="https://linkkle.com/pricing">Pricing</a></li> 
-                <li><a href=/register>Sign Up</a></li>
-                <li><a class='log' href=/login>Login</a></li>                        
-            </ul>
-        </div>
+        <topMenu></topMenu>
 
     	<div class="row pl-4 pr-4" style="min-height:200px;">
             <transition name="slide" mode="out-in" class="position-absolute">
@@ -49,6 +41,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import Menu from './components/widgets/menu.vue'
 export default {
     data() {
         return {
@@ -63,12 +56,16 @@ export default {
         }, 1000)
     },
     components: {
+        topMenu: Menu,
     },
     computed: {
         ...mapGetters([
         ]),
         isAuth(){
             return this.$store.state.auth
+        },
+        showMenu(){
+            return (document.getElementById("NoMenu") == null)
         },
         error(){
             return this.$store.state.error
@@ -92,6 +89,7 @@ export default {
 </script>
 
 <style>
+    @font-face { font-family: "Open Sans"; font-style: normal;  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url("https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUuhp.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 	body {
 		padding: 0;
 	    font-family: 16px/1.8 'Open Sans', Helvetica, Arial, sans-serif;
