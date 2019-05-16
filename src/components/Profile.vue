@@ -10,19 +10,21 @@
 					class="float-left btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 ml-n2 ">
 					<small>View</small>
 				</button>
-				<button @click="openProfileEdit()" style="margin-top:-73px;"
+				<button  @click="openStats()"  style="margin-top:-73px;"
 					class="float-right btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 pb-1 mr-n2 ">
-					<small>Edit</small>
+					<small>Stats</small>
 				</button>
 			</div>
 			<div id="Banner" :style="bannerStyle" class="">
 
 				<h1>{{account.Title}}</h1>
 				<h2>
-					@{{account.Username}}
+					@{{account.Username}} <small>({{account.Views}})</small>
 					</h2>
 				<p class="mb-0">{{account.Bio}}<br>
-					<i><small>{{account.Views}} views</small></i>
+					<button @click="openProfileEdit()"  class="btn btn-small bg-light btn-outline-primary text-dark p-0 pl-2 pr-2 mt-2 pb-1	">
+						<small>Edit</small>
+					</button>
 				</p>
 				
 			</div>
@@ -40,7 +42,7 @@
 						<small>Edit</small>
 					</button>
 					{{sect.Title}}
-					<i class="ml-2"><small>({{sect.Clicks}} clicks)</small></i>
+					<small>({{sect.Clicks}})</small>
 				</div>
 			</div>
 		</div>
@@ -56,6 +58,7 @@
 		<accountModal ref="accountModal"></accountModal>
 		<profileModal ref="profileModal"></profileModal>
 		<editModal ref="editModal"></editModal>
+		<statsModal ref="statsModal"></statsModal>
 
 	</div>
 </template>
@@ -65,6 +68,7 @@ import {mapActions, mapGetters} from 'vuex'
 import AccountModal from './widgets/AccountModal.vue'
 import ProfileModal from './widgets/ProfileModal.vue'
 import EditModal from './widgets/EditModal.vue'
+import StatsModal from './widgets/StatsModal.vue'
 export default {
 		data() {
 			return {
@@ -77,23 +81,26 @@ export default {
 		components: {
 			accountModal: AccountModal,
 			profileModal: ProfileModal,
-			editModal: EditModal
+			editModal: EditModal,
+			statsModal: StatsModal
 		},
 		created(){
-			var tthis = this
-			this.loading1()
-			if(!this.auth){
-				this.loading0()
-				window.location.replace('#/login')
-			} else {
-				this.getSections().then(() => {
-					tthis.loading0()
-					tthis.dataLoaded = true
-				})
-			}
 		},
 		mounted(){
 			$("#Menu").hide()
+			var tthis = this
+			this.loading1()
+			setTimeout(()=>{
+				if(!tthis.auth){
+					tthis.loading0()
+					window.location.replace('#/login')
+				} else {
+					tthis.getSections().then(() => {
+						tthis.loading0()
+						tthis.dataLoaded = true
+					})
+				}
+			}, 100)
 		},
 		computed: {
 			...mapGetters([
@@ -163,6 +170,12 @@ export default {
 				var tthis = this
 				setTimeout(function(){
 						tthis.$refs.accountModal.open()
+					}, 500)
+			},
+			openStats(){
+				var tthis = this
+				setTimeout(function(){
+						tthis.$refs.statsModal.open()
 					}, 500)
 			},
 			openProfileEdit(){

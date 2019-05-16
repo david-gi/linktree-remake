@@ -73,7 +73,7 @@
         outline: none;
         color: #519de8;
         font-family: 'Open Sans SemiBold';
-        font-size: 1.1em;
+        font-size: 1em;
         font-weight: bold !important;
         text-decoration: none;
         letter-spacing: 0.04em;

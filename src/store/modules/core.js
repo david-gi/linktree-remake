@@ -166,7 +166,7 @@ const actions = {
 	},
 	emailLogin: (context, {e, p}) => {
 		return new Promise((resolve, reject) => {
-			firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+			firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 				.then(function() {
 					firebase.auth().signInWithEmailAndPassword(e, p)
 						.then(function(res) {

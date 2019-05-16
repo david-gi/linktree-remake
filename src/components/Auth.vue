@@ -1,5 +1,5 @@
 <template>
-	<div class="modal fade mb-2 mt-5" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true">		
+	<div class="modal fade mb-2 mt-5" id="modalLoginWindow" tabindex="-1" role="dialog"  aria-hidden="true"> 	
 		<div class="modal-dialog modal-lg rounded mt-5 pt-3"  role="document">
 			<div class="modal-content bg-primary text-white rounded pb-1" style="min-width:280px;">
 				<div class="border-bottom text-center bg-primary p-3">
@@ -160,26 +160,25 @@ export default {
 			var tthis = this
 			function afterLogin(res){
 				tthis.loading0()
-				if(res || tthis.auth){
+				if(res){
 					window.location.replace("#/edit")
 				} else{
 					$("#modalLoginWindow").modal({backdrop:false, show: true})
 				}
 			}
-			var tthis = this
-			if(this.auth){
-				this.loading0()
+			if(tthis.auth){
+				tthis.loading0()
 				window.location.replace("#/edit")
 			} else {
 				if(false){ //linkedin// this.code){
-					this.linkedInLogin(this.code)
+					tthis.linkedInLogin(tthis.code)
 						.then((res)=>{ afterLogin(res) })
 				} else {
 					if(window.location.search.indexOf("logout") != -1){ 
 						$("#modalLoginWindow").modal({backdrop:false, show: true})
-						this.loading0()
+						tthis.loading0()
 					} else {
-						this.autoLogin().then((res)=>{ var r = afterLogin(res) })
+						tthis.autoLogin().then((res)=>{ var r = afterLogin(res) })
 					}
 				}
 			}
@@ -232,7 +231,7 @@ export default {
 				}
 				switch(flow){
 					case 0:
-						firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+						firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 							.then(function() {
 								tthis.loading0()
 								firebase.auth().signInWithRedirect(provider)

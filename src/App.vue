@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style>
-    @font-face { font-family: "Open Sans"; font-style: normal;  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url("https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUuhp.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family: "Open Sans"; font-style: normal; font-weight: 600; src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url("https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUuhp.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 	body {
 		padding: 0;
 	    font-family: 16px/1.8 'Open Sans', Helvetica, Arial, sans-serif;
