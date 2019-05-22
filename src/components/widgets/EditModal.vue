@@ -165,6 +165,7 @@
 							$("#modalWindow").modal("hide")
 							tthis.section = {}
 							tthis.advSettings = false
+							tthis.$forceUpdate()
 							tthis.loading0()
 						})
 					})

@@ -3,7 +3,7 @@
         <topMenu></topMenu>
 
     	<div class="row pl-4 pr-4" style="min-height:200px;">
-            <transition name="slide" mode="out-in" class="position-absolute">
+            <transition name="slide" mode="out-in" class="">
                 <router-view class=""></router-view>
             </transition>
     	</div>
@@ -21,13 +21,12 @@
             <div class="col-12x text-center text-white fixed-top error bg-danger">{{error}}</div>
         </div>
 
-		<div id="Footer" class="text-center mb-1 col-12">
+		<div id="Footer" class="text-center mb-3 col-12">
             <div style="min-width:330px;">
                 <a src="/"><img alt="Linkkle.com" src="./assets/logo.svg" width="120" height="30"/>&nbsp;</a>
                 <ul class="listMenu">
-                    <li><a href="https://linkkle.com/privacy">Privacy</a></li>
-                    <li><a href="https://twitter.com/mylinkkle">Twitter</a></li>
-                    <li><a href="mailto:support@linkkle.com">Support</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="mailto:linkkle@gmx.com">Support</a></li>
                 </ul>
             </div>
         </div>

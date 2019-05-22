@@ -111,17 +111,17 @@
 			...mapActions([
 			]),
 			initChart(){
+				var ci = 0
 				this.sections.forEach(s =>{
 					var label =  s.Title.length > 10 ?  s.Title.substring(0, 9) + "..." : s.Title
 					var count = s.Clicks ? s.Clicks : 0
 					this.totalClicks += count
 
+					var hexes = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080']
 					var data = 
 						{
 								label: label,
-								backgroundColor: "#519DE8",
-								borderColor: "#354378",
-								borderWidth: 1,
+								backgroundColor: hexes[ci++],
 								data: [
 									count
 								]

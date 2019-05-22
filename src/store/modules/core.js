@@ -158,8 +158,11 @@ const actions = {
 					resolve(r)
 				})
 				.catch(e => { 
-					console.log(e)
-					context.commit('setError',"" + e)
+					if((""+e).indexOf("email address is already in use")){
+						context.commit('setMsg',"Verification email has been sent.")
+					} else {
+						context.commit('setError',"" + e)
+					}
 					reject(null)
 				})
 		})
@@ -172,9 +175,12 @@ const actions = {
 						.then(function(res) {
 							resolve(res)
 						})
+						.catch(e => { 
+							context.commit('setError',"Invalid password.")
+							reject(null)
+						})
 				})
 				.catch(e => { 
-					console.log(e)
 					context.commit('setError',"" + e)
 					reject(null)
 				})
