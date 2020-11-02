@@ -1,6 +1,6 @@
-# app name
+# Linkkle 2.0
 
-> decription here
+> A revamp of a linking site named Linkkle with Vue and Firebase.
 
 ## Build Setup
 
